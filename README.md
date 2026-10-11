@@ -21,7 +21,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR, follows the reviewer by default |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
-| `inbox` | What needs you now: your PRs, reviews waiting on you, mentions and questions, with drafts; `deep` prepares the work |
+| `inbox` | What needs you now: your PRs, reviews waiting on you, mentions and questions, with drafts; does what a message asks you to (review, investigate), draft-only |
 | `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
@@ -80,7 +80,7 @@ task's own changes, and env files copied into worktrees).
 
 Skills work unattended (cloud routines, desktop scheduled tasks, `/loop`): they never stop to ask,
 never send anything you haven't approved, and put the confirmation list in their report. For
-example, a weekday hourly routine with the prompt `Run /inbox deep` and `deliver: slack-dm`.
+example, a weekday hourly routine with the prompt `Run /inbox` and `deliver: slack-dm`.
 
 ## Requirements
 

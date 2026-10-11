@@ -3,11 +3,11 @@ name: inbox
 description: >-
   What needs you right now, across your projects: your PRs that need action (changes requested,
   new comments, failing CI, conflicts, approved but not merged), PRs waiting for your review or
-  re-review, and Slack/tracker mentions and questions, each with a draft reply or next step.
-  `deep` also prepares the work: drafts reviews, comment fixes and investigations. Read-only apart
-  from delivering the digest. Built for routines and scheduled runs too. Use on "what needs me",
+  re-review, and Slack/tracker mentions and questions, each with a draft reply or next step. When
+  a message asks you to do something (review a PR, look into a problem), it does it draft-only.
+  Read-only apart from delivering the digest. Built for routines and scheduled runs too. Use on "what needs me",
   "check my PRs", "any mentions", "follow up on my PRs", "/inbox".
-argument-hint: "[deep] [here] [since <date|time>]"
+argument-hint: "[here] [since <date|time>]"
 ---
 
 # Inbox
@@ -49,15 +49,14 @@ assigned to you. Skip what you already answered or reacted to as handled.
 - Draft a reply for each question or mention. A question about how the system behaves, a bug or an
   incident gets a quick read-only look at the code, ticket and logs first so the draft answers it.
 
-## 4. `deep`: prepare the work
-Read-only and local only; nothing is posted or pushed:
-- Waiting reviews: run `dev-skills:pr-review` (or `re-review`). Unattended on GitHub: save it as a
-  pending review; elsewhere keep it in the report.
-- Your PRs with comments: run `dev-skills:address-comments` up to local commits in its worktree;
-  replies and push go on the confirmation list.
-- Failing CI: find the cause from the logs; a fix is prepared the same way.
-- Conflicts: run `dev-skills:resolve-conflicts` in the worktree, no push.
-- Questions that need digging: run `dev-skills:investigate`.
+## 4. Requests addressed to you
+Only when a mention, DM or ticket comment asks you to do something, do it draft-only with the
+matching skill, and link the draft to the reply:
+- "review / take a look at this PR": `dev-skills:pr-review` (or `re-review`). Unattended on GitHub:
+  save it as a pending review; elsewhere keep it in the report.
+- "why is X happening", a bug, an incident, a data question: `dev-skills:investigate`.
+- Anything else: the draft reply says what you'd do; nothing is done.
+Everything else in the inbox (review requests from the PR host, your own PRs) is listed, not worked on.
 
 ## 5. Deliver
 Write the digest per `deliver`, then save the run time to `~/.dev-skills/inbox/last-run` (create the
@@ -68,11 +67,12 @@ Inbox — <date time> · since <window start> · <n> need you
 Urgent:
 - #oncall: "checkout failing for EU" (Ana, 20m, new) → looked: <finding> · draft: "<reply>"
 Waiting on you:
-- Review <repo>#45 "<title>" (Bob, 1d) → pending review saved, 2 findings
-- Re-review <repo>#51 (3 new commits) → threads addressed: 2/3
+- Review <repo>#45 "<title>" (Bob, 1d)
+- Re-review <repo>#51 (3 new commits since your review)
+- Slack DM from Dan: "can you review #52?" → pending review saved, 2 findings · draft: "Left 2 comments"
 Your PRs:
-- <repo>#40 changes requested (2 new comments) → fixes committed locally in <worktree>
-- <repo>#38 CI failing: <test> → cause: <...>
+- <repo>#40 changes requested (2 new comments) → address-comments
+- <repo>#38 CI failing: <test>
 - <repo>#36 approved, not merged
 Mentions:
 - PROJ-120 comment from Carol: "<question>" → draft: "<reply>"
