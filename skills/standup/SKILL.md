@@ -14,8 +14,8 @@ argument-hint: "[since <date|time>]"
 Follow `../../shared/policy.md`. Reads only.
 
 ## 1. Window
-- Start: the previous workday's daily, using `daily_time` from `### standup` in `defaults.md` or the
-  current profile (default 10:00 local). Monday reaches back to Friday's daily. `since <...>` overrides.
+- Start: the previous business day's daily (business days as defined in the `sprint` skill), using `daily_time` from `### standup` in `defaults.md` or the
+  current profile (default 10:00 local). Monday reaches back to Friday's daily; a holiday is skipped the same way. `since <...>` overrides.
 - End: now.
 
 ## 2. Repos and boards
@@ -32,7 +32,7 @@ current repo. Their trackers and PR hosts from the profiles.
 | Claude Code sessions | `~/.claude/projects/*/*.jsonl` modified in the window: read the user prompts and final assistant replies of each session in the window; extract work that has no git trace (investigations, reviews not posted, research, plans). Summarize only. |
 | dev-skills work | files under `~/.dev-skills/work/` modified in the window (`context.md`, `spec.md`, `investigation.md`, ...) |
 | Slack | if connected: threads you replied in (e.g. support answers) |
-| Plan | today's tickets from the current sprint plan (`dev-skills:plan` file) |
+| Plan | today's tickets from the current sprint plan (`dev-skills:sprint` file; on a non-business day, the next business day) |
 
 ## 4. Merge
 One line per ticket or PR, combining every source ("DEV-123: fixed and opened PR, answered the

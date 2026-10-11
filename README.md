@@ -21,7 +21,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR, follows the reviewer by default |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
-| `plan` | `sprint`: day-by-day sprint plan; `day`: today's tickets and their real status |
+| `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
 | `spec` | Implementation spec, or `rfc` for a structured RFC |
@@ -65,7 +65,7 @@ task's own changes, and env files copied into worktrees).
   ### standup
   - daily_time: 09:30
   - output: file ~/Documents/standups/{date}.md
-  ### plan
+  ### sprint
   - days_off: 2026-10-20
   ```
   Or just say "remember for this project: ...".
