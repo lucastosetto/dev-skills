@@ -28,20 +28,26 @@ days; weekends and days off never get rows. Dates use the user's local timezone.
 ## Plan (`/sprint`, `/sprint next`)
 1. **Tickets:** yours in the current sprint (or the next one with `next`), with status, priority,
    estimate/points, links (blocks/is blocked by), and the sprint's start and end dates.
-2. **Size:** estimate or points mapped to S/M/L/XL. No estimate: size from the description plus a
-   quick look at the code it touches; mark `(inferred)`. XL: suggest splitting.
-   Already-done work counts: tickets with merged PRs need only the remaining steps (review, QA).
-3. **Capacity:** business days from the first remaining business day (today if it is one, else the
+2. **What's left (matters mid-sprint):** get each ticket's real status (see Today, step 4).
+   - Done (tracker done/closed, or PR merged with nothing left): not planned again; listed under
+     `Already done`.
+   - Partly done: plan only the remaining steps (e.g. PR open → review turnaround and fixes;
+     changes requested → address comments; approved → merge and QA).
+   - Past days are never re-planned. If a plan file for this sprint exists, keep its earlier rows as
+     history and replace only the rows from today on.
+3. **Size** the remaining work: estimate or points mapped to S/M/L/XL. No estimate: size from the
+   description plus a quick look at the code it touches; mark `(inferred)`. XL: suggest splitting.
+4. **Capacity:** business days from the first remaining business day (today if it is one, else the
    next; or the sprint start for `next`) to the sprint end, minus meeting time, times `hours_per_day`.
-4. **Order:**
+5. **Order:**
    - Blockers of other tickets (yours or teammates') first.
    - Then priority.
    - Risky or unclear tickets early, so surprises surface while there's room.
    - Spread work so every ticket's code is done before the last `buffer_days` business days, which
      stay for review, QA and fixes. A PR opened on the last day rarely merges.
-5. **Fit:** if it doesn't fit, say so first, with what to cut or raise (lowest priority, largest,
+6. **Fit:** if it doesn't fit, say so first, with what to cut or raise (lowest priority, largest,
    least started).
-6. Save the plan; in `guided`, show it and wait for approval before saving.
+7. Save the plan; in `guided`, show it and wait for approval before saving.
 
 ```markdown
 # <board> — <sprint> (<start> → <end>)
@@ -51,6 +57,7 @@ Business days left: <n> · Capacity: <h> h · Planned: <h> h · Buffer: <n> day(
 | Mon 10/12 | DEV-120 | implement + PR | M |
 | Tue 10/13 | DEV-120 / DEV-121 | address review / start | — / L |
 ...
+Already done: <tickets — how (merged PR, closed)>
 Risks: <unclear tickets, external dependencies>
 Updated: <timestamp> (<reason>)
 ```
