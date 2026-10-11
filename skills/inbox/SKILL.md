@@ -6,7 +6,7 @@ description: >-
   you to do something (review a PR, look into a problem), it does it draft-only. Read-only apart
   from delivering the digest. Built for routines and scheduled runs too. Use on "any mentions",
   "what did people ask me", "check my messages", "/inbox".
-argument-hint: "[here] [since <date|time>]"
+argument-hint: "[since <date|time>]"
 ---
 
 # Inbox
@@ -27,8 +27,7 @@ Config from `### inbox` (profile `## Mine`, then `defaults.md`):
   `slack-dm` the last digest in your DM, which works in cloud runs), else the previous business
   day's start. Messages still unanswered are listed whatever the window; the window only decides
   what's marked **new**.
-- **Projects:** every repo with a profile in `~/.dev-skills/profiles/` plus the current one (`here`:
-  current repo only). In a cloud run, the cloned repos. Trackers and PR hosts come from the profiles,
+- **Projects:** every repo with a profile in `~/.dev-skills/profiles/` plus the current one. In a cloud run, the cloned repos. Trackers and PR hosts come from the profiles,
   or `project-profile` when missing.
 
 ## 2. Collect
