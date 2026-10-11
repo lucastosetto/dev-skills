@@ -21,7 +21,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR, follows the reviewer by default |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
-| `inbox` | What needs you now: your PRs, reviews waiting on you, mentions and questions, with drafts; does what a message asks you to (review, investigate), draft-only |
+| `inbox` | Messages waiting for you (Slack, ticket and PR comments) with draft replies; does what a message asks (review, investigate), draft-only |
 | `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
