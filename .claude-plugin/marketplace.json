@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "dev-skills",
+  "description": "Repo-agnostic Claude Code skills for the full dev workflow.",
+  "owner": {
+    "name": "Lucas Tosetto",
+    "url": "https://github.com/lucastosetto"
+  },
+  "plugins": [
+    {
+      "name": "dev-skills",
+      "description": "Requirements to production: spec, QA, implement, investigate, review, deploy, monitor, plan, standup. Adapts to each repo.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "dev-skills",
+  "version": "0.1.0",
+  "description": "Repo-agnostic skills for the full software engineering loop: requirements, spec, QA, implementation, investigation, PR review and follow-up, deploys, monitoring, sprint planning and standups. Detects each project's tracker, PR host, deploy method and observability on its own.",
+  "author": {
+    "name": "Lucas Tosetto",
+    "url": "https://github.com/lucastosetto"
+  },
+  "repository": "https://github.com/lucastosetto/dev-skills",
+  "keywords": ["workflow", "engineering", "jira", "linear", "pull-request", "deploy", "observability", "standup"],
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Autonomy mode",
+      "description": "autonomous: asks only before external writes (push, PR, comments, tickets, messages, deploys, shared data). balanced: also before commits and risky local changes. guided: also approves the spec and QA plan before coding.",
+      "default": "balanced",
+      "options": ["autonomous", "balanced", "guided"]
+    }
+  }
+}
