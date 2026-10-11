@@ -32,7 +32,7 @@ untracked file. Exceptions:
 
 ### Resolving the mode
 First match wins:
-1. The current request (`/dev-skills:implement DEV-1 guided`, "be strict on this one").
+1. The current request (`/dev-skills:implement PROJ-1 guided`, "be strict on this one").
 2. A session switch made earlier in this conversation (`/dev-skills:mode guided`).
 3. `mode:` under `## Mine` in the project profile.
 4. Global mode given at session start (plugin option).
@@ -72,9 +72,9 @@ Collect every "list" action as a numbered draft and show them together at the en
 
 ```
 Ready to send (reply with numbers, "all" or "none"):
-1. Push branch dev-123-foo to origin
-2. Open PR "DEV-123: ..." into main — description below
-3. Comment on DEV-123: "..."
+1. Push branch proj-123-foo to origin
+2. Open PR "PROJ-123: ..." into main — description below
+3. Comment on PROJ-123: "..."
 ```
 
 - Show the full text of anything that will be read by people.

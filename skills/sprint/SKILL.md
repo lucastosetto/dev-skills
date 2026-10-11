@@ -56,8 +56,8 @@ remaining tickets across the remaining business days.
 Business days left: <n> · Tickets left: <n>
 | Day | Tickets | Work |
 |---|---|---|
-| Mon 10/12 | DEV-120 | implement + PR |
-| Tue 10/13 | DEV-121, DEV-125 (small) | implement + PR |
+| Mon 10/12 | PROJ-120 | implement + PR |
+| Tue 10/13 | PROJ-121, PROJ-125 (small) | implement + PR |
 ...
 Already done: <tickets — how (merged PR, closed)>
 Risks: <unclear tickets, external dependencies>
@@ -77,8 +77,8 @@ Updated: <timestamp> (<reason>)
 
 ```
 Today (Tue 10/13) — on track | behind by <n> ticket(s) | ahead
-- DEV-120 changes requested → address comments (dev-skills:address-comments)
-- DEV-121 not started → implement
+- PROJ-120 changes requested → address comments (dev-skills:address-comments)
+- PROJ-121 not started → implement
 Carried over: <ticket — why>
 Sprint changes: <added/removed>
 Re-planned: <yes — what moved | no>
@@ -87,5 +87,5 @@ Non-business day:
 ```
 Nothing planned today (Sunday).
 Next: Mon 10/12
-- DEV-120 not started → implement
+- PROJ-120 not started → implement
 ```

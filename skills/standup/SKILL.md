@@ -35,7 +35,7 @@ current repo. Their trackers and PR hosts from the profiles.
 | Plan | today's tickets from the current sprint plan (`dev-skills:sprint` file; on a non-business day, the next business day) |
 
 ## 4. Merge
-One line per ticket or PR, combining every source ("DEV-123: fixed and opened PR, answered the
+One line per ticket or PR, combining every source ("PROJ-123: fixed and opened PR, answered the
 support thread"). Drop noise: base-branch merges, staging redeploys, revert-and-redo churn, WIP commits.
 Name tickets by key plus a few words of what the work *was*, not branch names.
 
@@ -47,15 +47,15 @@ Name tickets by key plus a few words of what the work *was*, not branch names.
 ## Output
 ```
 Done:
-- DEV-123 PR opened — <few words>
+- PROJ-123 PR opened — <few words>
 - Investigated <issue>: <cause in a clause>
 - Reviewed: <repo>#45, <repo>#51
 In progress:
-- DEV-130 addressing review comments
+- PROJ-130 addressing review comments
 Today:
-- DEV-131, DEV-134
+- PROJ-131, PROJ-134
 Blockers:
-- DEV-128 PR waiting for review 2 days
+- PROJ-128 PR waiting for review 2 days
 ```
 Leave out empty sections. One line per item; whole message readable in under 30 seconds.
 Output to chat, or also to a file when `output: file <path pattern>` is set under `### standup`

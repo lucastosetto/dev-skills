@@ -33,7 +33,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `resolve-conflicts` | Judgment-based git conflict resolution with a report |
 | `project-profile` | Discovers and caches the project's setup; holds your notes |
 
-Commands are prefixed: `/dev-skills:implement DEV-123`.
+Commands are prefixed: `/dev-skills:implement PROJ-123`.
 
 ## Autonomy modes
 
@@ -48,7 +48,7 @@ mode, collected into one list at the end of the run. Production deploys and roll
 confirmed.
 
 Switch with `/dev-skills:mode <mode>` (this session), `/dev-skills:mode <mode> project` or
-`/dev-skills:mode <mode> global`, or add the mode to a single request: `/dev-skills:implement DEV-123 guided`.
+`/dev-skills:mode <mode> global`, or add the mode to a single request: `/dev-skills:implement PROJ-123 guided`.
 
 ## Your config
 
