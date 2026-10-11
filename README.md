@@ -21,6 +21,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR, follows the reviewer by default |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
+| `inbox` | What needs you now: your PRs, reviews waiting on you, mentions and questions, with drafts; `deep` prepares the work |
 | `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
@@ -67,10 +68,19 @@ task's own changes, and env files copied into worktrees).
   - output: file ~/Documents/standups/{date}.md
   ### sprint
   - days_off: 2026-10-20
+  ### inbox
+  - deliver: slack-dm
+  - channels: #oncall, #support
   ```
   Or just say "remember for this project: ...".
 - `defaults.md`: the same sections, applied to every project.
-- `work/`, `plans/`, `worktrees/`: specs, investigations, sprint plans and worktrees.
+- `work/`, `plans/`, `worktrees/`, `inbox/`: specs, investigations, sprint plans, worktrees and the last inbox run.
+
+## Routines and scheduled runs
+
+Skills work unattended (cloud routines, desktop scheduled tasks, `/loop`): they never stop to ask,
+never send anything you haven't approved, and put the confirmation list in their report. For
+example, a weekday hourly routine with the prompt `Run /inbox deep` and `deliver: slack-dm`.
 
 ## Requirements
 

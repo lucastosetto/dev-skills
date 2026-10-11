@@ -10,6 +10,12 @@ stacked on an unmerged branch, not the default branch.
   (fields `isResolved`, `comments { author { login } body path line createdAt }`).
 - My PRs: `gh pr list --author @me --state all --json number,title,state,reviewDecision,updatedAt,url`.
 - PRs I reviewed: `gh search prs --reviewed-by @me --updated ">=<date>"`.
+- Waiting on my review: `gh search prs --review-requested=@me --state open`; across repos also
+  `gh search prs --owner <org> --state open --involves @me`.
+- CI and conflicts: `gh pr view <n> --json statusCheckRollup,mergeable,mergeStateStatus`.
+- Pending (private draft) review: `gh api repos/<o>/<r>/pulls/<n>/reviews --input <json>` with
+  `commit_id`, `body` and `comments[]` (`path`, `line`, `side`, `body`) and **no `event`**; it stays
+  visible only to you until submitted.
 - Create: `gh pr create --base <base> --title ... --body-file <file>`; template at
   `.github/pull_request_template.md` or `.github/PULL_REQUEST_TEMPLATE/`.
 - Inline comment: `gh api repos/<o>/<r>/pulls/<n>/comments -f body=... -f commit_id=<head sha> -f path=... -F line=... -f side=RIGHT`.
@@ -19,6 +25,8 @@ stacked on an unmerged branch, not the default branch.
 - Tools: Bitbucket MCP (get pull request, diff, comments, create PR, create comment), found via
   ToolSearch "bitbucket pull request".
 - List responses can be large and spill to a file: parse with `jq`.
+- Waiting on my review: open PRs where I'm in `reviewers` and haven't approved (`participants[].approved`).
+- No private draft reviews: keep review drafts in the report.
 - Comments: `inline.path` / `inline.to` for location; `parent.id` for replies; `deleted` and
   resolution state to filter.
 - Templates: team description templates usually live in the repo docs or a project skill; check the profile.

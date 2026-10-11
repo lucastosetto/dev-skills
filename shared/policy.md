@@ -12,6 +12,7 @@ and shared-data actions taken outside a skill.
 | Global defaults (user-written) | `~/.dev-skills/defaults.md` |
 | Work outputs (context, spec, QA plan, investigation, repro scripts) | `~/.dev-skills/work/<project-slug>/<TICKET or short-slug>/` |
 | Sprint plans | `~/.dev-skills/plans/<board-slug>/<sprint-slug>.md` |
+| Inbox state | `~/.dev-skills/inbox/last-run` |
 | Worktrees | `~/.dev-skills/worktrees/<project-slug>/<branch>/` |
 | Tool notes (trackers, PR hosts, deploys, observability) | `<plugin root>/shared/references/*.md` |
 
@@ -83,6 +84,16 @@ Ready to send (reply with numbers, "all" or "none"):
 - Execute only the approved items, each with one tool. If a call fails, do not retry it with a
   different tool (the first may have gone through): report the failure.
 - Reply with links to what was created.
+
+### Unattended runs
+A run started by a routine, a scheduled task or a loop, or a request that says "unattended", has
+no one to answer:
+- Never stop to ask: every "ask" checkpoint becomes "list".
+- Never execute the confirmation list: put it in the report for the user to approve later.
+- Writes allowed without approval: local ones the mode allows, the report delivery the user
+  configured (e.g. `deliver: slack-dm` to their own DM, or a file), and drafts only the user can see
+  (e.g. a GitHub *pending* review, which stays invisible until they submit it).
+- Don't boot apps or start local services unless the run's prompt says to.
 
 ## Writing for people
 PR descriptions, comments, replies, tickets, questions:
