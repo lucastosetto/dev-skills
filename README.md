@@ -52,7 +52,7 @@ Switch with `/dev-skills:mode <mode>` (this session), `/dev-skills:mode <mode> p
 
 ## Your config
 
-Everything lives in `~/.claude/dev-skills/`; nothing is ever written into your repos (except the
+Everything lives in `~/.dev-skills/`; nothing is ever written into your repos (except the
 task's own changes, and env files copied into worktrees).
 
 - `profiles/<project>.md`: `## Discovered` is maintained automatically; `## Mine` is yours, with a

@@ -21,7 +21,7 @@ handled by the mode inside gather-context.
 ## 2. Worktree
 - Branch name: the profile's `branch_naming` (else `<ticket-key-lowercase>-<short-slug>`), from the
   up-to-date base branch (`git fetch origin <base>`).
-- Create it outside the repo: `git worktree add ~/.claude/dev-skills/worktrees/<project-slug>/<branch> -b <branch> origin/<base>`.
+- Create it outside the repo: `git worktree add ~/.dev-skills/worktrees/<project-slug>/<branch> -b <branch> origin/<base>`.
   Reuse it if it already exists for this ticket.
 - Copy the main checkout's env files (profile `env_files`) into it.
 - From here, every command runs in the worktree (absolute paths or `cd <worktree> && ...`).

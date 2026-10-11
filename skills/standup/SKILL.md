@@ -19,7 +19,7 @@ Follow `../../shared/policy.md`. Reads only.
 - End: now.
 
 ## 2. Repos and boards
-All repos with a profile in `~/.claude/dev-skills/profiles/` (each profile's `Repo:` path), plus the
+All repos with a profile in `~/.dev-skills/profiles/` (each profile's `Repo:` path), plus the
 current repo. Their trackers and PR hosts from the profiles.
 
 ## 3. Collect (only items by you, in the window)
@@ -30,7 +30,7 @@ current repo. Their trackers and PR hosts from the profiles.
 | Reviews you gave | PRs you reviewed or commented on, with your verdict |
 | Tickets | ones you moved, commented on, or created (trackers.md) |
 | Claude Code sessions | `~/.claude/projects/*/*.jsonl` modified in the window: read the user prompts and final assistant replies of each session in the window; extract work that has no git trace (investigations, reviews not posted, research, plans). Summarize only. |
-| dev-skills work | files under `~/.claude/dev-skills/work/` modified in the window (`context.md`, `spec.md`, `investigation.md`, ...) |
+| dev-skills work | files under `~/.dev-skills/work/` modified in the window (`context.md`, `spec.md`, `investigation.md`, ...) |
 | Slack | if connected: threads you replied in (e.g. support answers) |
 | Plan | today's tickets from the current sprint plan (`dev-skills:plan` file) |
 

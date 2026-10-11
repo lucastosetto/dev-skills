@@ -15,7 +15,7 @@ Host commands: `../../shared/references/pr-hosts.md`.
 
 ## 1. Fetch
 - The PR: given, or the open PR for the current branch. Work in its branch (its existing worktree
-  under `~/.claude/dev-skills/worktrees/` if there is one; otherwise create one as in `implement`).
+  under `~/.dev-skills/worktrees/` if there is one; otherwise create one as in `implement`).
 - Unresolved review threads and general comments not yet answered by you. Skip resolved, deleted and
   outdated threads whose code no longer exists (mention them).
 - Requirements: the ticket via `dev-skills:gather-context` (reuse `context.md` if present).

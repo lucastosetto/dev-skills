@@ -14,7 +14,7 @@ Follow `../../shared/policy.md` (relative to this skill's folder).
 
 ## 1. Locate
 Compute `<project-slug>` (see policy "Paths") for the repo at the current working directory, or
-the repo the task is about. The profile is `~/.claude/dev-skills/profiles/<project-slug>.md`.
+the repo the task is about. The profile is `~/.dev-skills/profiles/<project-slug>.md`.
 Worktrees of the same repo share the slug, so they share the profile.
 
 ## 2. Load or discover

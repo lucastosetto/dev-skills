@@ -13,7 +13,7 @@ argument-hint: "[sprint [next] | day]"
 
 Follow `../../shared/policy.md`. Run `dev-skills:project-profile` for the current repo to find the
 tracker and board. Tracker queries: `../../shared/references/trackers.md`.
-The plan belongs to the **board**, not a repo: `~/.claude/dev-skills/plans/<board-slug>/<sprint-slug>.md`.
+The plan belongs to the **board**, not a repo: `~/.dev-skills/plans/<board-slug>/<sprint-slug>.md`.
 Never changes the tracker; ticket updates the user wants go on the confirmation list.
 
 Config from `### plan` (profile `## Mine`, then `defaults.md`): `days_off` (dates), `buffer_days`

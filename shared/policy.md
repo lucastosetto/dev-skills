@@ -7,12 +7,12 @@ and shared-data actions taken outside a skill.
 
 | What | Where |
 |---|---|
-| Plugin data root | `~/.claude/dev-skills/` |
-| Project profile | `~/.claude/dev-skills/profiles/<project-slug>.md` |
-| Global defaults (user-written) | `~/.claude/dev-skills/defaults.md` |
-| Work outputs (context, spec, QA plan, investigation, repro scripts) | `~/.claude/dev-skills/work/<project-slug>/<TICKET or short-slug>/` |
-| Sprint plans | `~/.claude/dev-skills/plans/<board-slug>/<sprint-slug>.md` |
-| Worktrees | `~/.claude/dev-skills/worktrees/<project-slug>/<branch>/` |
+| Plugin data root | `~/.dev-skills/` |
+| Project profile | `~/.dev-skills/profiles/<project-slug>.md` |
+| Global defaults (user-written) | `~/.dev-skills/defaults.md` |
+| Work outputs (context, spec, QA plan, investigation, repro scripts) | `~/.dev-skills/work/<project-slug>/<TICKET or short-slug>/` |
+| Sprint plans | `~/.dev-skills/plans/<board-slug>/<sprint-slug>.md` |
+| Worktrees | `~/.dev-skills/worktrees/<project-slug>/<branch>/` |
 | Tool notes (trackers, PR hosts, deploys, observability) | `<plugin root>/shared/references/*.md` |
 
 `<project-slug>`: from `git remote get-url origin`, lowercased, protocol, credentials and `.git` dropped,
@@ -22,7 +22,7 @@ path the same way. Create folders as needed.
 ## Never write into a repo
 
 Skill bookkeeping (profiles, notes, plans, specs, scratch scripts, learned gotchas) goes only under
-`~/.claude/dev-skills/`. Not in the repo, not in its `.claude/`, not in `.gitignore`, not in an
+`~/.dev-skills/`. Not in the repo, not in its `.claude/`, not in `.gitignore`, not in an
 untracked file. Exceptions:
 - Changes that are the task itself (code, tests, the repo's own docs), made in a worktree.
 - Copying the main checkout's `.env` (and similar untracked local env files the project documents)
@@ -93,7 +93,7 @@ PR descriptions, comments, replies, tickets, questions:
 
 ## Project config
 Read the profile's `## Discovered` facts and the `## Mine` notes for the current skill. Precedence:
-`## Mine` (project) > `~/.claude/dev-skills/defaults.md` (global) > discovered > the skill's default.
+`## Mine` (project) > `~/.dev-skills/defaults.md` (global) > discovered > the skill's default.
 Apply notes without asking. When the user says "remember for this project: X", add it under
 `## Mine` → `### <skill>` (or `### general`) in the profile. When they say "remember everywhere: X",
 add it to `defaults.md`. Neither needs confirmation.

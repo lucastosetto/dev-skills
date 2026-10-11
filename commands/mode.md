@@ -19,5 +19,5 @@ Follow the "Mode" section of the dev-skills `shared/policy.md`.
   and apply it to this conversation too. It reaches new sessions through the startup hook.
 
 Reject any mode other than `autonomous`, `balanced` or `guided` and list the three.
-This command only changes Claude Code settings or files under `~/.claude/`, never a repo, so it
-needs no confirmation.
+This command only changes Claude Code settings or the profile under `~/.dev-skills/`, never a repo,
+so it needs no confirmation.

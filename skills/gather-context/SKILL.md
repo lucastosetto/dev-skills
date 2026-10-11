@@ -41,7 +41,7 @@ Apply the mode (policy "Autonomy"): in `guided` ask the unknowns now; in `balanc
 unknown that would change the work materially; otherwise keep the assumptions.
 
 ## Output
-Write `~/.claude/dev-skills/work/<project-slug>/<TICKET or short-slug>/context.md`:
+Write `~/.dev-skills/work/<project-slug>/<TICKET or short-slug>/context.md`:
 
 ```markdown
 # <TICKET> — <title>
