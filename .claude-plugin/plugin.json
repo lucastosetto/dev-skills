@@ -7,14 +7,28 @@
     "url": "https://github.com/lucastosetto"
   },
   "repository": "https://github.com/lucastosetto/dev-skills",
-  "keywords": ["workflow", "engineering", "jira", "linear", "pull-request", "deploy", "observability", "standup"],
+  "keywords": [
+    "workflow",
+    "engineering",
+    "jira",
+    "linear",
+    "pull-request",
+    "deploy",
+    "observability",
+    "standup"
+  ],
   "userConfig": {
     "mode": {
       "type": "string",
       "title": "Autonomy mode",
       "description": "autonomous: asks only before external writes (push, PR, comments, tickets, messages, deploys, shared data). balanced: also before commits and risky local changes. guided: also approves the spec and QA plan before coding.",
       "default": "balanced",
-      "options": ["autonomous", "balanced", "guided"]
+      "options": [
+        "autonomous",
+        "balanced",
+        "guided"
+      ]
     }
-  }
+  },
+  "license": "MIT"
 }

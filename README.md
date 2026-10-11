@@ -77,3 +77,7 @@ task's own changes, and env files copied into worktrees).
 - `git`; `gh` / `glab` or the Bitbucket MCP for your PR host.
 - MCP servers for what your team uses (Jira/Linear, Grafana/Sentry, Slack, Notion...). Missing ones
   are reported as gaps, never guessed.
+
+## License
+
+MIT
