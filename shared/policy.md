@@ -133,4 +133,6 @@ overrides longer formats in the skills: keep their sections, cut their length.
 - Evidence, queries, traces, file lists and reasoning go to the skill's work file when it writes
   one; end with `Details: <path>`. Otherwise keep them for when the user asks.
 - Drafts for other people (confirmation list) are shown in full, and are short themselves.
+- Show each draft exactly as it will be posted, byte for byte: any footer, signature, mention or
+  template text included. Post that exact text; never add to it after approval.
 - The user can ask for more ("details", "expand 2", "show the evidence"): then give the full version.

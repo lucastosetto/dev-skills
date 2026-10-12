@@ -60,7 +60,8 @@ Verdict: approve | approve with nits skipped | request changes
 ```
 No findings: one line saying so.
 
-Then the confirmation list: one draft inline comment per finding (problem, one scenario, the fix;
+Then the confirmation list: one draft inline comment per finding, shown exactly as it will be posted
+(problem, one scenario, the fix;
 no preamble), on the most relevant line of the **new** file version, plus the review verdict
 (approve / request changes) when the user wants it submitted. Follow project PR-comment rules from
 the profile if present. Post only approved items, one tool each, no retries with another tool.
