@@ -4,8 +4,8 @@ description: >-
   Plan your sprint and your day. "/sprint" pulls the tickets assigned to you in the current (or
   next) sprint, and distributes them across business days so everything finishes before
   the sprint ends. "/sprint today" reads that plan and says what to tackle today and where each
-  ticket really stands (not started, branch, PR open, changes requested, approved, merged),
-  re-planning if behind. Use on "plan my sprint", "plan the next sprint", "what should I work on
+  ticket really stands (not started, branch, PR open, changes requested, approved, merged).
+  Once a plan exists, re-runs follow it, check briefly for changes and ask before re-planning. Use on "plan my sprint", "plan the next sprint", "what should I work on
   today", "plan my day", "/sprint", "/sprint today".
 argument-hint: "[next | today]"
 ---
@@ -27,22 +27,33 @@ days; weekends and days off never get rows. Dates use the user's local timezone.
 moving tickets, and don't use the tickets' estimates or story points. The job is to distribute all
 remaining tickets across the remaining business days.
 
-## Plan (`/sprint`, `/sprint next`)
-1. **Tickets:** yours in the current sprint (or the next one with `next`), with status, priority,
-   links (blocks/is blocked by), and the sprint's start and end dates.
+## Existing plan (`/sprint` when a plan file for that sprint exists)
+Follow the saved plan. Don't re-read ticket descriptions, weigh tickets or re-plan unprompted.
+1. Show the plan's rows from today on, in the output format below.
+2. **Brief change check**, one tracker query for your tickets in that sprint (key, summary, status),
+   compared with the plan file:
+   - tickets added to or removed from the sprint;
+   - tickets that became done;
+   - status moves that change the order (To Do → In Progress).
+3. Nothing changed: say `No changes since <Updated date>.` and stop.
+4. Something changed: list each change on one line, then ask `Re-plan from today?`. Re-plan only on
+   a yes, with the Plan steps below (unattended runs: put the question in the report, don't re-plan).
+
+## Plan (`/sprint` with no plan file yet, `/sprint next`, or re-plan approved)
+1. **Tickets:** yours in the current sprint (or the next one with `next`), with summary, status,
+   priority, board rank, links (blocks/is blocked by), and the sprint's start and end dates.
 2. **What's left (matters mid-sprint):** get each ticket's real status (see Today, step 4).
    - Done (tracker done/closed, or PR merged with nothing left): not planned again; listed under
      `Already done`.
-   - Partly done: plan only the remaining steps (e.g. PR open → review turnaround and fixes;
-     changes requested → address comments; approved → merge and QA). These are small.
+   - Partly done (PR open, in review, in QA): left out of the plan; the open PRs need no row.
    - Past days are never re-planned. If a plan file for this sprint exists, keep its earlier rows as
      history and replace only the rows from today on.
 3. **Relative weight:** small / normal / big, judged from the description and a quick look at the
    code it touches (not from estimates). Used only to balance days.
 4. **Days:** remaining business days, from the first one (today if it is one, else the next; or the
    sprint start for `next`) to the sprint end.
-5. **Order:** blockers of other tickets (yours or teammates') first, then priority, then risky or
-   unclear tickets early so surprises surface while there's room.
+5. **Order:** In Progress tickets first, then To Do tickets in the board's rank order. A recurring
+   ticket (on-call, support) goes on an `Every day` line instead of a row.
 6. **Distribute** in that order so each day gets a similar share:
    - Tickets ≈ days: one ticket per day.
    - More tickets than days: some days take two or more; group small ones together, and keep a big
@@ -51,18 +62,24 @@ remaining tickets across the remaining business days.
      follow-ups and QA.
 7. Save the plan; in `guided`, show it and wait for approval before saving.
 
+### Output format (chat and plan file)
+One row per ticket, `KEY: summary` with the tracker's summary verbatim. A ticket sharing a day gets
+its own row with the same day. A ticket spanning days gets one row with a day range.
+
 ```markdown
 # <board> — <sprint> (<start> → <end>)
-Business days left: <n> · Tickets left: <n>
-| Day | Tickets | Work |
-|---|---|---|
-| Mon 10/12 | PROJ-120 | implement + PR |
-| Tue 10/13 | PROJ-121, PROJ-125 (small) | implement + PR |
-...
-Already done: <tickets — how (merged PR, closed)>
-Risks: <unclear tickets, external dependencies>
+| Day | Ticket |
+|---|---|
+| Mon 10/12 | PROJ-118: <summary> |
+| Tue 10/13 | PROJ-120: <summary> |
+| Tue 10/13 | PROJ-125: <summary> |
+| Wed 10/14 – Thu 10/15 | PROJ-121: <summary> |
+| Fri 10/16 | Review follow-ups and merges |
+| Every day | PROJ-130: <summary> |
+Risks: <one line, only if any>
 Updated: <timestamp> (<reason>)
 ```
+In chat, skip the `#` heading and `Updated` line and add nothing else besides `Risks`.
 
 ## Today (`/sprint today`)
 1. Load the current sprint's plan. None: offer `/sprint` and stop.
@@ -72,20 +89,19 @@ Updated: <timestamp> (<reason>)
 4. **Real status** per ticket: tracker status + branch exists (all repos in `related_repos` and the
    current one) + PR state (open, changes requested, approved, merged) + CI state.
 5. **Changes:** tickets added to or removed from the sprint since planning.
-6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, re-plan the
-   remaining tickets over the remaining business days with the same rules and update the file (`guided`: propose and ask first).
+6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, say so and ask
+   `Re-plan from today?`; re-plan only on a yes, with the Plan steps.
 
 ```
 Today (Tue 10/13) — on track | behind by <n> ticket(s) | ahead
-- PROJ-120 changes requested → address comments (dev-skills:address-comments)
-- PROJ-121 not started → implement
+- PROJ-120: <summary> — changes requested → address comments (dev-skills:address-comments)
+- PROJ-121: <summary> — not started → implement
 Carried over: <ticket — why>
 Sprint changes: <added/removed>
-Re-planned: <yes — what moved | no>
 ```
 Non-business day:
 ```
 Nothing planned today (Sunday).
 Next: Mon 10/12
-- PROJ-120 not started → implement
+- PROJ-120: <summary> — not started → implement
 ```
