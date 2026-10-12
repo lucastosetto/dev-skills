@@ -6,6 +6,7 @@ description: >-
   "prepare a demo", "make slides for this feature", "present this implementation", "demo deck",
   "/demo".
 argument-hint: "<ticket|pr|branch|feature> [slides|doc|markdown]"
+model: sonnet
 ---
 
 # Demo

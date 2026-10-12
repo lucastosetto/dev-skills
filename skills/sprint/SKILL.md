@@ -8,6 +8,7 @@ description: >-
   Once a plan exists, re-runs follow it, check briefly for changes and ask before re-planning. Use on "plan my sprint", "plan the next sprint", "what should I work on
   today", "plan my day", "/sprint", "/sprint today".
 argument-hint: "[next | today]"
+model: sonnet
 ---
 
 # Sprint

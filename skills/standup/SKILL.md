@@ -7,6 +7,7 @@ description: >-
   under 30 seconds. Use on "standup", "daily update", "what did I do since yesterday",
   "prepare my daily", "/standup".
 argument-hint: "[since <date|time>]"
+model: sonnet
 ---
 
 # Standup
