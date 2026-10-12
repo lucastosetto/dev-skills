@@ -121,3 +121,16 @@ add it to `defaults.md`. Neither needs confirmation.
 Start every final report with one line: `Mode: <mode> (<source>) · Profile: <path>`.
 Then the skill's own format. End with `Assumed:` (decisions made without asking, one per line)
 when there are any, then the confirmation list when there is one.
+
+### Compact by default
+Every report (chat, file, Slack digest) is as short as it can be while still useful. This
+overrides longer formats in the skills: keep their sections, cut their length.
+- First line after the header: the outcome (done / found / blocked) in one sentence.
+- Then only what the user must act on or decide. One line per item, fragments fine.
+- No preamble, no restating the request, no recap of steps taken, no "checked and fine" lists,
+  no empty sections. Links and keys instead of quotes.
+- `Assumed:` only for decisions that change the result.
+- Evidence, queries, traces, file lists and reasoning go to the skill's work file when it writes
+  one; end with `Details: <path>`. Otherwise keep them for when the user asks.
+- Drafts for other people (confirmation list) are shown in full, and are short themselves.
+- The user can ask for more ("details", "expand 2", "show the evidence"): then give the full version.
