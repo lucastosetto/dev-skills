@@ -116,6 +116,8 @@ add it to `defaults.md`. Neither needs confirmation.
 - A missing source is a gap to report with what would close it, never a reason to guess.
 - When the profile lists a project skill for a step (e.g. a project `deploy-to-staging` skill),
   run that skill for the step instead of the generic instructions.
+- Cheap first: check whether anything changed before heavy work, and stop early when nothing did.
+  Batch reads per source (one search or list call for all items), never one call per item.
 
 ## Reports
 Start every final report with one line: `Mode: <mode> (<source>) · Profile: <path>`.

@@ -25,7 +25,8 @@ Host commands: `../../shared/references/pr-hosts.md`.
 ## 2. Mode
 - **review** (default): full pass, steps 3-4.
 - **re-review** (or the user already reviewed this PR): fetch your earlier review threads and the
-  commits pushed after your last review. For each of your threads: addressed / partly / not
+  commits pushed after your last review. No new commits and no new replies on your threads: say
+  `No new commits or replies since your review on <date>.` and stop. For each of your threads: addressed / partly / not
   addressed / answered with a reason (judge whether the reason holds). Then review only the new diff.
   Do a full pass again only if the new changes are large (rewrote the approach, many new files) or
   touch a critical path; say which you did.

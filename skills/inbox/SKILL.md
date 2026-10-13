@@ -6,7 +6,8 @@ description: >-
   you to do something (review a PR, look into a problem), it does it draft-only. Read-only apart
   from delivering the digest. Built for routines and scheduled runs too. Use on "any mentions",
   "what did people ask me", "check my messages", "/inbox".
-argument-hint: "[since <date|time>]"
+argument-hint: "[refresh | since <date|time>]"
+model: sonnet
 ---
 
 # Inbox
@@ -21,6 +22,13 @@ Config from `### inbox` (profile `## Mine`, then `defaults.md`):
 - `deliver`: `chat` (default), `slack-dm` (send the digest to your own Slack DM, no approval
   needed), or `file <path pattern>` (`{date}` allowed, outside any repo).
 - `channels`: Slack channels to scan for questions without a mention (e.g. on-call, support).
+- `fresh_minutes`: how long a digest is reused (default 30).
+
+## 0. Reuse before re-checking
+- **Recent digest:** without `refresh` or `since`, if `~/.dev-skills/inbox/last-digest.md` is younger
+  than `fresh_minutes`, show it with its age, add `/inbox refresh to re-check`, and stop.
+- **Unattended:** run `<plugin root>/shared/bin/changed inbox`. Exit 1 (no GitHub activity and the
+  last full run is under 2h old): deliver nothing, reply with its output line, and stop. Exit 0 or 2: go on.
 
 ## 1. Window and scope
 - **Since:** `since <...>`, else the time of the last digest (`~/.dev-skills/inbox/last-run`, or with
@@ -39,6 +47,11 @@ Messages you haven't answered or reacted to as handled:
   to your review comments, and comments mentioning you on any PR.
 
 ## 3. Triage
+**Item cache** `~/.dev-skills/inbox/items.json`, keyed by message id (Slack permalink, comment id),
+holding its last activity time, triage line and draft. An item whose last activity matches the cache
+reuses its line and draft as they are: no new look, no new draft. Only new or changed items are
+triaged below. Save the cache after the run, dropping items that were answered or resolved.
+
 - Order: incidents and production questions, then people blocked on you, then the rest.
 - One line per message: source, who, since when, the ask, next step.
 - Draft a reply for each. A question about how the system behaves, a bug or an incident gets a
@@ -55,8 +68,8 @@ result in the draft reply:
 - Anything else: the draft reply says what you'd do; nothing is done.
 
 ## 5. Deliver
-Write the digest per `deliver`, then save the run time to `~/.dev-skills/inbox/last-run` (create the
-folder). Nothing else is sent.
+Write the digest per `deliver` and to `~/.dev-skills/inbox/last-digest.md`, then save the run time
+to `~/.dev-skills/inbox/last-run` (create the folder). Nothing else is sent.
 
 ```
 Inbox — <date time> · since <window start> · <n> waiting

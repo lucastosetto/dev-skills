@@ -82,6 +82,15 @@ Skills work unattended (cloud routines, desktop scheduled tasks, `/loop`): they 
 never send anything you haven't approved, and put the confirmation list in their report. For
 example, a weekday hourly routine with the prompt `Run /inbox` and `deliver: slack-dm`.
 
+To skip runs when nothing happened, gate the routine on `shared/bin/changed <name> [max_age_minutes]`
+before starting Claude. It asks GitHub's `/notifications` with `If-Modified-Since` (a `304` costs no
+rate limit) and exits 0 to run (new activity, or the last run is older than `max_age`, default 120, so
+Slack and the tracker still sync), 1 to skip, 2 when it could not check.
+
+Repeat calls are cheap: `/inbox` reuses a digest younger than `fresh_minutes` (default 30) and keeps
+drafts for messages that didn't change; `/sprint today` reuses a status under 30 minutes old. Add
+`refresh` to force a new check.
+
 ## Requirements
 
 - `git`; `gh` / `glab` or the Bitbucket MCP for your PR host.

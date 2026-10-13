@@ -14,10 +14,12 @@ Follow `../../shared/policy.md`. Run `dev-skills:project-profile` first.
 Host commands: `../../shared/references/pr-hosts.md`.
 
 ## 1. Fetch
-- The PR: given, or the open PR for the current branch. Work in its branch (its existing worktree
-  under `~/.dev-skills/worktrees/` if there is one; otherwise create one as in `implement`).
+- The PR: given, or the open PR for the current branch.
 - Unresolved review threads and general comments not yet answered by you. Skip resolved, deleted and
-  outdated threads whose code no longer exists (mention them).
+  outdated threads whose code no longer exists (mention them). None left: say
+  `Nothing to address on <PR>.` and stop, before any worktree or ticket work.
+- Work in its branch (its existing worktree under `~/.dev-skills/worktrees/` if there is one;
+  otherwise create one as in `implement`).
 - Requirements: the ticket via `dev-skills:gather-context` (reuse `context.md` if present).
 
 ## 2. Decide per comment

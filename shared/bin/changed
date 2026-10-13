@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Cheap gate before a model run: has anything happened on GitHub since the last run?
+#   changed <name> [max_age_minutes=120]
+# Exit 0: run (new GitHub notifications, or the last run is older than max_age so Slack/tracker get a
+# periodic sync). Exit 1: skip, nothing new. Exit 2: could not check (callers should run anyway).
+# Uses GitHub's documented polling: If-Modified-Since on /notifications; a 304 is free of rate limit.
+set -u
+name=${1:?usage: changed <name> [max_age_minutes]}
+max_age=${2:-120}
+dir="${DEV_SKILLS_HOME:-$HOME/.dev-skills}/changed"
+mkdir -p "$dir"
+lastmod_file="$dir/$name.lastmod" ran_file="$dir/$name.ran"
+now=$(date +%s)
+ran=$(cat "$ran_file" 2>/dev/null || echo 0)
+
+run() { echo "$now" > "$ran_file"; echo "$1"; exit 0; }
+
+lastmod=$(cat "$lastmod_file" 2>/dev/null || true)
+out=$(gh api -i notifications ${lastmod:+-H "If-Modified-Since: $lastmod"} 2>/dev/null)
+status=$(head -1 <<<"$out" | awk '{print $2}')
+case "$status" in
+  200)
+    grep -i '^last-modified:' <<<"$out" | head -1 | cut -d' ' -f2- | tr -d '\r' > "$lastmod_file"
+    run "github: new activity" ;;
+  304)
+    [ $((now - ran)) -ge $((max_age * 60)) ] && run "periodic sync (last run over ${max_age}m ago)"
+    echo "No new GitHub activity since $(date -r "$ran" '+%a %H:%M')"
+    exit 1 ;;
+  *)
+    echo "could not check GitHub (${status:-no response})"
+    exit 2 ;;
+esac

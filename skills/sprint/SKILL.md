@@ -7,7 +7,7 @@ description: >-
   ticket really stands (not started, branch, PR open, changes requested, approved, merged).
   Once a plan exists, re-runs follow it, check briefly for changes and ask before re-planning. Use on "plan my sprint", "plan the next sprint", "what should I work on
   today", "plan my day", "/sprint", "/sprint today".
-argument-hint: "[next | today]"
+argument-hint: "[next | today [refresh]]"
 model: sonnet
 ---
 
@@ -84,14 +84,21 @@ In chat, skip the `#` heading and `Updated` line and add nothing else besides `R
 
 ## Today (`/sprint today`)
 1. Load the current sprint's plan. None: offer `/sprint` and stop.
+   Without `refresh`, if `<sprint-slug>.today.md` next to the plan is under 30 minutes old, show it
+   with its age, add `/sprint today refresh to re-check`, and stop.
 2. **Not a business day** (weekend, holiday, day off): say `Nothing planned today (<weekday>).`, then
    show the next business day's rows as a preview with their real status (step 4). Don't re-plan.
 3. Business day: today's rows plus anything planned earlier that is not done.
 4. **Real status** per ticket: tracker status + branch exists (all repos in `related_repos` and the
-   current one) + PR state (open, changes requested, approved, merged) + CI state.
+   current one) + PR state (open, changes requested, approved, merged) + CI state. Batch it: one
+   tracker query for all the tickets, one `git branch -a` and one PR list per repo (e.g.
+   `gh pr list --author @me --state all --json headRefName,state,reviewDecision,statusCheckRollup`),
+   then match by ticket key. Never one call per ticket.
 5. **Changes:** tickets added to or removed from the sprint since planning.
 6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, say so and ask
    `Re-plan from today?`; re-plan only on a yes, with the Plan steps.
+
+Save the report to `<sprint-slug>.today.md`.
 
 ```
 Today (Tue 10/13) — on track | behind by <n> ticket(s) | ahead
