@@ -37,8 +37,8 @@ Follow the saved plan. Don't re-read ticket descriptions, weigh tickets or re-pl
    - tickets that became done;
    - status moves that change the order (To Do → In Progress).
 3. Nothing changed: say `No changes since <Updated date>.` and stop.
-4. Something changed: list each change on one line, then ask `Re-plan from today?`. Re-plan only on
-   a yes, with the Plan steps below (unattended runs: put the question in the report, don't re-plan).
+4. Something changed: list each change on one line, then re-plan from today with the Plan steps
+   below, without asking (in `guided`, show the new plan and wait for approval).
 
 ## Plan (`/sprint` with no plan file yet, `/sprint next`, or re-plan approved)
 1. **Tickets:** yours in the current sprint (or the next one with `next`), with summary, status,
@@ -96,8 +96,9 @@ In chat, skip the `#` heading and `Updated` line and add nothing else besides `R
    `gh pr list --author @me --state all --json headRefName,state,reviewDecision,statusCheckRollup`),
    then match by ticket key. Never one call per ticket.
 5. **Changes:** tickets added to or removed from the sprint since planning.
-6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, say so and ask
-   `Re-plan from today?`; re-plan only on a yes, with the Plan steps.
+6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, say so and re-plan
+   from today with the Plan steps, without asking (in `guided`, show it and wait for approval); then
+   build today's report from the new plan.
 
 Save the report to `<sprint-slug>.today.md`, with a last line `Made: <YYYY-MM-DD HH:MM>`.
 

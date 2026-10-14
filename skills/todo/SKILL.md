@@ -25,6 +25,9 @@ Config from `### todo` (profile `## Mine`, then `defaults.md`):
 - `managers`: Slack names or handles of your managers. Optional: only needed when your Slack profile
   doesn't say who they are. The routine prompt can also give them (`Managers: ...`).
 - `fresh_minutes`: how long a report is reused (default 30).
+- `on_call`: `yes` (default) or `no`. The routine prompt can also give it (`On call: no`). With `no`,
+  Support only keeps threads that name you, and recurring on-call or support tickets (the plan's
+  `Every day` line) are left out.
 
 State lives in `~/.dev-skills/todo/` (create it): `last.md` (report), `last.json` (items),
 `items.json` (cache), `last-run`.
@@ -63,8 +66,10 @@ Per board:
      it` under **Needs you** and go on without that board's plan.
 2. **Day plan:** `<sprint-slug>.today.md` next to it whose `Made:` line is today. Use it as it is.
    Missing or from an earlier day: say `Building today's plan for <board>.` (interactive), run
-   `dev-skills:sprint` `today refresh`, and go on. Unattended runs build it too. Its
-   `Re-plan from today?` question goes under **Needs you** as `run /todo replan sprint`.
+   `dev-skills:sprint` `today refresh`, and go on. Unattended runs build it too.
+3. **Re-plan:** when the day plan says behind or lists sprint changes, re-plan the sprint from today
+   (`dev-skills:sprint`, re-plan approved), then `today refresh`, in unattended runs too. Never ask
+   or list it under **Needs you**; the report header says `re-planned`.
 
 `replan` and `replan sprint` rebuild as described in **Arguments** before this step reads them.
 
@@ -74,8 +79,12 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
 - **GitHub:** run `<plugin root>/shared/bin/todo-github [since]` once: one GraphQL call returning
   review requests, your open PRs (review decision, mergeable, CI, unresolved threads where someone
   else spoke last) and open issues/PRs mentioning you. Don't call `gh` per PR.
-- **Other PR hosts** (Bitbucket, GitLab; `../../shared/references/pr-hosts.md`): per repo with a
-  profile on that host, one call for your open PRs and one for PRs waiting for your review.
+- **Bitbucket:** run `<plugin root>/shared/bin/todo-bitbucket <your Atlassian account id>` once
+  (the id from the Atlassian user info; it is the same account as Jira's). It covers every repo with
+  a Bitbucket profile: PRs listing you as reviewer that nobody has approved, and your open PRs with
+  approvals, CI, conflicts, commits behind base and human comments. Don't call the Bitbucket MCP.
+- **Other PR hosts** (GitLab; `../../shared/references/pr-hosts.md`): per repo with a profile on
+  that host, one call for your open PRs and one for PRs waiting for your review.
 - **Slack:** only messages from the last 24h (or `since`), in this order:
   1. **Managers:** DMs from your managers. Find them from your Slack profile (manager field, title,
      team) or the `managers` config; none found: skip this tier, no gap.
@@ -90,6 +99,12 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
   left out otherwise.
 - **Tickets** (`../../shared/references/trackers.md`): one query per tracker for comments
   mentioning you or on tickets assigned to you, since the window start.
+
+**Reviews for you:** only PRs that list you as reviewer. **My PRs:** list one only when it needs
+you, and say what: comments by others waiting on you (`waiting_on_me`, unresolved threads),
+changes requested, CI failing, conflicts, behind base (needs update), approved and ready to merge,
+or open over 24h with no reviewer comment or approval yet (nudge the reviewers). Otherwise leave it
+out. Ticket comments count the same whatever the ticket's status (QA, CR, ...).
 
 **Window:** the time in `last-run`, else the previous business day's start; it decides what's marked
 **new**. Unanswered GitHub and ticket items are listed whatever the window. Slack is limited to its

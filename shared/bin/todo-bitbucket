@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Bitbucket part of /todo, no model needed:
+#   todo-bitbucket <my Atlassian account id> [workspace/repo ...]
+# Repos default to every ~/.dev-skills/profiles/bitbucket.org__<workspace>__<repo>.md.
+# Credentials: BITBUCKET_USERNAME (Atlassian email) and BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN.
+# Prints JSON: {me, reviews: open PRs listing me as reviewer that nobody (me included) has approved, mine: my
+# open PRs}. Each PR carries approvals, changes requested, CI, merge conflicts, commits behind its
+# base (capped at 100) and human comments (Oscar and other bots left out): when the last one was, by
+# whom, and how many comments by others came after my last one.
+set -euo pipefail
+me=${1:?usage: todo-bitbucket <my Atlassian account id> [workspace/repo ...]}
+shift
+repos=("$@")
+if [ ${#repos[@]} -eq 0 ]; then
+  for f in "${DEV_SKILLS_HOME:-$HOME/.dev-skills}"/profiles/bitbucket.org__*__*.md; do
+    [ -e "$f" ] || continue
+    f=${f##*/bitbucket.org__}; f=${f%.md}; repos+=("${f%%__*}/${f#*__}")
+  done
+fi
+auth="${BITBUCKET_USERNAME:?BITBUCKET_USERNAME not set}:${BITBUCKET_PASSWORD:-${BITBUCKET_API_TOKEN:?BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN not set}}"
+api=https://api.bitbucket.org/2.0/repositories
+bots='^(Oscar|.*[Bb]ot|Bitbucket.*|Pipelines)$'
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+get() { curl -sfL --retry 1 -u "$auth" "$1"; }
+
+for r in "${repos[@]}"; do
+  get "$api/$r/pullrequests?state=OPEN&pagelen=50&fields=values.id,values.title,values.draft,values.created_on,values.updated_on,values.author.account_id,values.author.display_name,values.source.branch.name,values.source.commit.hash,values.destination.branch.name,values.links.html.href,values.participants.user.account_id,values.participants.user.display_name,values.participants.role,values.participants.approved,values.participants.state" |
+    jq -c --arg r "$r" --arg me "$me" '.values[]
+      | (.participants | map(select(.user.account_id != $me))) as $others
+      | select(.author.account_id == $me
+          or ((.participants | any(.role == "REVIEWER" and .user.account_id == $me))
+              and (.draft | not) and (.participants | any(.approved) | not)))
+      | {repo: $r, number: .id, url: .links.html.href, title, draft, created: .created_on, at: .updated_on,
+         author: .author.display_name, mine: (.author.account_id == $me), branch: .source.branch.name,
+         base: .destination.branch.name, head: .source.commit.hash,
+         approved_by: [$others[] | select(.approved) | .user.display_name],
+         changes_requested_by: [$others[] | select(.state == "changes_requested") | .user.display_name]}'
+done > "$tmp/prs"
+
+n=0
+while read -r pr; do
+  n=$((n + 1))
+  (
+    r=$(jq -r .repo <<<"$pr"); id=$(jq -r .number <<<"$pr")
+    get "$api/$r/pullrequests/$id/comments?pagelen=100&fields=values.user.account_id,values.user.display_name,values.created_on,values.deleted,values.resolution" > "$tmp/c$n" || echo '{"values":[]}' > "$tmp/c$n"
+    get "$api/$r/pullrequests/$id/statuses?pagelen=20&fields=values.state" > "$tmp/s$n" || echo '{"values":[]}' > "$tmp/s$n"
+    get "$api/$r/pullrequests/$id/diffstat?pagelen=100&fields=values.status,values.lines_added,values.lines_removed" > "$tmp/d$n" || echo '{"values":[]}' > "$tmp/d$n"
+    get "$api/$r/commits/$(jq -r .base <<<"$pr")?exclude=$(jq -r .head <<<"$pr")&pagelen=100&fields=values.hash" > "$tmp/b$n" || echo '{}' > "$tmp/b$n"
+    jq -n --argjson pr "$pr" --arg me "$me" --arg bots "$bots" \
+      --slurpfile c "$tmp/c$n" --slurpfile s "$tmp/s$n" --slurpfile d "$tmp/d$n" --slurpfile b "$tmp/b$n" '
+      ([$c[0].values[] | select(.deleted | not) | select(.user.display_name | test($bots) | not)]
+        | sort_by(.created_on)) as $h
+      | ([$h[] | select(.user.account_id == $me) | .created_on] | last) as $my_last
+      | ($s[0].values | map(.state)) as $ci
+      | $pr + {
+          ci: (if $ci == [] then null elif any($ci[]; . == "FAILED" or . == "STOPPED") then "FAILED"
+               elif any($ci[]; . == "INPROGRESS") then "INPROGRESS" else "SUCCESSFUL" end),
+          conflicts: any($d[0].values[]; .status == "merge conflict"),
+          add: ([$d[0].values[].lines_added] | add // 0), del: ([$d[0].values[].lines_removed] | add // 0),
+          behind: (if $b[0].values then ($b[0].values | length) else null end),
+          human_comments: ($h | length),
+          reviewer_comments: ([$h[] | select(.user.display_name != $pr.author)] | length),
+          last_human_comment: ($h | last | if . then {by: .user.display_name, at: .created_on} else null end),
+          waiting_on_me: ([$h[] | select(.user.account_id != $me)
+                            | select($my_last == null or .created_on > $my_last)] | length)}
+      | del(.head)' > "$tmp/out$n"
+  ) &
+done < "$tmp/prs"
+wait
+jq -s --arg me "$me" '{me: $me, reviews: map(select(.mine | not)), mine: map(select(.mine))}' $(ls "$tmp"/out* 2>/dev/null) /dev/null
