@@ -96,6 +96,9 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
   4. **Support:** bugs, incidents, customer issues and support questions about your work (your
      repos, services, tickets) in support and incident channels you're in and `channels`.
 
+  Read a channel message's thread (by its thread timestamp), not the channel history: thread replies
+  don't show there, so a mention inside a thread would look gone.
+
   Drop a thread as resolved when you replied after the last ask, when you or the asker reacted with
   ✅, when an incident is marked resolved, or when someone else answered it and nothing after that
   answer names you or asks you directly. Threads you're only in go under **FYI** with `all`, and are
