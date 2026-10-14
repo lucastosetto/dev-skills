@@ -6,7 +6,7 @@
 # Prints JSON: {me, reviews: open PRs listing me as reviewer that nobody (me included) has approved, mine: my
 # open PRs}. Each PR carries approvals, changes requested, CI, merge conflicts, commits behind its
 # base (capped at 100) and human comments (Oscar and other bots left out): when the last one was, by
-# whom, and how many comments by others came after my last one.
+# whom, and how many comments by others came after my last one (0 on a review I haven't commented on yet).
 set -euo pipefail
 me=${1:?usage: todo-bitbucket <my Atlassian account id> [workspace/repo ...]}
 shift
@@ -62,8 +62,9 @@ while read -r pr; do
           human_comments: ($h | length),
           reviewer_comments: ([$h[] | select(.user.display_name != $pr.author)] | length),
           last_human_comment: ($h | last | if . then {by: .user.display_name, at: .created_on} else null end),
-          waiting_on_me: ([$h[] | select(.user.account_id != $me)
-                            | select($my_last == null or .created_on > $my_last)] | length)}
+          waiting_on_me: (if $my_last == null and ($pr.mine | not) then 0 else
+                            [$h[] | select(.user.account_id != $me)
+                             | select($my_last == null or .created_on > $my_last)] | length end)}
       | del(.head)' > "$tmp/out$n"
   ) &
 done < "$tmp/prs"

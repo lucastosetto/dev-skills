@@ -5,7 +5,8 @@ description: >-
   next) sprint, and distributes them across business days so everything finishes before
   the sprint ends. "/sprint today" reads that plan and says what to tackle today and where each
   ticket really stands (not started, branch, PR open, changes requested, approved, merged).
-  Once a plan exists, re-runs follow it, check briefly for changes and ask before re-planning. Use on "plan my sprint", "plan the next sprint", "what should I work on
+  Once a plan exists, re-runs follow it, check briefly for changes and re-plan from today when
+  behind or the sprint changed (no approval needed, unattended runs included). Use on "plan my sprint", "plan the next sprint", "what should I work on
   today", "plan my day", "/sprint", "/sprint today".
 argument-hint: "[next | today [refresh]]"
 model: sonnet
@@ -29,7 +30,7 @@ moving tickets, and don't use the tickets' estimates or story points. The job is
 remaining tickets across the remaining business days.
 
 ## Existing plan (`/sprint` when a plan file for that sprint exists)
-Follow the saved plan. Don't re-read ticket descriptions, weigh tickets or re-plan unprompted.
+Follow the saved plan. Don't re-read ticket descriptions or weigh tickets unless re-planning.
 1. Show the plan's rows from today on, in the output format below.
 2. **Brief change check**, one tracker query for your tickets in that sprint (key, summary, status),
    compared with the plan file:
