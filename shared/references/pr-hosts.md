@@ -7,7 +7,9 @@ stacked on an unmerged branch, not the default branch.
 - View: `gh pr view <n> --json number,title,body,state,baseRefName,headRefName,author,reviewDecision,url`
 - Diff: `gh pr diff <n>`. Full files: `git fetch origin <head> <base>`, then `git show "origin/<head>:<path>"`.
 - Review threads (resolved state, my comments): `gh api graphql` on `pullRequest.reviewThreads`
-  (fields `isResolved`, `comments { author { login } body path line createdAt }`).
+  (fields `id isResolved isOutdated`, `comments { author { __typename login } body path line createdAt }`).
+- Resolve a thread: `gh api graphql -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}' -f id=<thread id>`.
+- Failed checks: `gh pr checks <n>`; logs `gh run view <run id> --log-failed`; rerun `gh run rerun <run id> --failed`.
 - My PRs: `gh pr list --author @me --state all --json number,title,state,reviewDecision,updatedAt,url`.
 - PRs I reviewed: `gh search prs --reviewed-by @me --updated ">=<date>"`.
 - Waiting on my review: `gh search prs --review-requested=@me --state open`; across repos also
@@ -34,6 +36,8 @@ stacked on an unmerged branch, not the default branch.
 ## GitLab
 - `glab mr view <n>`, `glab mr diff <n>`, `glab mr list --author=@me`, `glab mr create`,
   `glab mr note <n> -m ...`. Threads: `glab api projects/:id/merge_requests/<n>/discussions`.
+  Resolve: `glab api -X PUT projects/:id/merge_requests/<n>/discussions/<id> -f resolved=true`.
+  Failed jobs: `glab ci view`, `glab ci trace <job>`.
 
 ## No tool available
 Report it and hand the user the drafted title/body/comments to paste.

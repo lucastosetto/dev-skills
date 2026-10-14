@@ -19,7 +19,8 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `implement` | Ticket → worktree → spec + QA plan → code → verify → docs → local commit → push/PR (confirmed) |
 | `investigate` | Read-only root cause with logs, metrics, traces and data; drafts the ticket and support reply |
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
-| `address-comments` | Works through review comments on your PR, follows the reviewer by default |
+| `address-comments` | Works through review comments on your PR: fixes valid ones, short replies, resolves bot threads |
+| `prs-follow-up` | For each of your open PRs: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
 | `inbox` | Messages waiting for you (Slack, ticket and PR comments) with draft replies; does what a message asks (review, investigate), draft-only |
 | `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
