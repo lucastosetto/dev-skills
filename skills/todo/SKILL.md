@@ -57,8 +57,10 @@ Skipped with `refresh` or `replan`.
 **Boards:** the tracker board of every project with a profile in `~/.dev-skills/profiles/` (only those
 inside `projects` when set) plus the current repo (`dev-skills:project-profile` when it has none). Each project uses its own profile's
 `tracker` (Jira, Linear, ClickUp, GitHub; `../../shared/references/trackers.md`). A tracker without
-sprints (no sprints/cycles, no ClickUp Sprints folder) has no plan: list your open tickets there
-under **Assigned** instead, from one query. No tracker: skip.
+sprints (no sprints/cycles, no ClickUp Sprints folder), or whose current sprint holds none of your
+tickets, has no plan: list under **Assigned** only your tickets in progress plus those assigned to
+you or updated in the last 24h, from one query. In review or backlog tickets otherwise stay out (their
+PRs show up under **My PRs**). No tracker: skip.
 
 Per board:
 1. **Sprint plan:** a file in `~/.dev-skills/plans/<board-slug>/` whose header end date is today or
@@ -117,7 +119,8 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
 **Reviews for you:** only PRs that list you as reviewer. **My PRs:** list one only when it needs
 you, and say what: comments by others waiting on you (`waiting_on_me`, unresolved threads),
 changes requested, CI failing, conflicts, behind base (needs update), approved and ready to merge,
-or open over 24h with no reviewer comment or approval yet (nudge the reviewers). Otherwise leave it
+or open over 24h (`created`) with no review or comment from a person yet (`human_feedback` is 0;
+bot reviews like Cursor don't count): nudge the reviewers. Otherwise leave it
 out. Ticket comments count the same whatever the ticket's status (QA, CR, ...).
 
 **Window:** the time in `last-run`, else the previous business day's start; it decides what's marked
