@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # GitHub part of /todo, no model needed:
 #   todo-github [mentions_since=YYYY-MM-DD, default 3 days ago]
-# Prints JSON: {login, reviews: PRs waiting for my review, mine: my open PRs, mentions: open issues/PRs
+# Prints JSON: {login, reviews: PRs that request my review by name (not only through a team), that
+# nobody has approved yet and that a person (not a bot) opened, mine: my open PRs, mentions: open issues/PRs
 # mentioning me}. PRs carry review decision, mergeable, CI rollup and unresolved threads whose last
 # comment is not mine. Uses the gh account currently active.
 # One paged GraphQL search per list, run in parallel: one big query hits GitHub's 10s timeout (502).
@@ -13,7 +14,9 @@ trap 'rm -rf "$tmp"' EXIT
 
 pr_fields='... on PullRequest {
   url number title isDraft updatedAt additions deletions headRefName reviewDecision mergeable
-  author { login } repository { nameWithOwner }
+  author { __typename login } repository { nameWithOwner }
+  reviewRequests(first: 20) { nodes { requestedReviewer { ... on User { login } } } }
+  latestReviews(first: 20) { nodes { state } }
   commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
   reviewThreads(first: 50) { nodes { isResolved comments(last: 1) { nodes { author { login } } } } }
 }'
@@ -43,5 +46,7 @@ jq -n --arg l "$login" --slurpfile r "$tmp/reviews" --slurpfile m "$tmp/mine" --
     mergeable, ci: .commits.nodes[0].commit.statusCheckRollup.state,
     waiting_threads: [.reviewThreads.nodes[] | select(.isResolved | not)
       | select(.comments.nodes[0].author.login != $l)] | length};
-  {login: $l, reviews: [$r[0][] | pr], mine: [$m[0][] | pr],
+  {login: $l, reviews: [$r[0][] | select(.author.__typename != "Bot")
+      | select(any(.reviewRequests.nodes[]; .requestedReviewer.login == $l))
+      | select(any(.latestReviews.nodes[]; .state == "APPROVED") | not) | pr], mine: [$m[0][] | pr],
     mentions: [$x[0][] | {url, repo: .repository.nameWithOwner, title, author: .author.login, at: .updatedAt}]}'
