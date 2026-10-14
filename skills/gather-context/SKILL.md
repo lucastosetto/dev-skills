@@ -22,7 +22,7 @@ Identify each input's type from its shape (ticket key/URL, Slack link, doc URL, 
 - **Related work:** search the tracker and PR host for the ticket key and key terms: earlier PRs,
   duplicate or sibling tickets.
 - Unreachable source: note it as a gap; continue with the rest.
-- Fetch in one haiku subagent (policy "Delegating big reads"), returning verbatim: description,
+- Fetch inside one `Agent` call, `model: haiku` (policy "Delegating big reads"), returning verbatim: description,
   comments (author, date), linked issues and docs, attachment names, related PRs and tickets. Keep
   steps 2 and 3 in the main thread.
 

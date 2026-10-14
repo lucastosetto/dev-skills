@@ -28,7 +28,7 @@ For target and baseline:
 - Traces: slowest and failing spans for the target.
 - Jobs/queues: failures, retries, queue depth.
 - Analytics/experiments (if connected): event counts, funnel steps, variant metrics with sample sizes.
-Run the collection as one haiku subagent (policy "Delegating big reads"), returning per signal:
+Run the collection inside one `Agent` call, `model: haiku` (policy "Delegating big reads"), returning per signal:
 numbers for target and baseline, verbatim decisive lines, and the queries and labels used.
 A source not connected is listed under Gaps with the exact query the user could run.
 

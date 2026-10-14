@@ -114,6 +114,8 @@ add it to `defaults.md`. Neither needs confirmation.
 - Find tools by capability, not by hardcoded name: use ToolSearch with keywords (e.g. "jira issue",
   "linear issue", "bitbucket pull request", "grafana loki", "sentry issue", "slack message").
 - Pick the environment that matches the task (e.g. a `-prod` server for a production incident).
+- When lean-ctx tools (`ctx_shell`, `ctx_read`, `ctx_search`) are connected, use them for test runs,
+  logs and large file reads; their output is compressed. Never required: native tools otherwise.
 - A missing source is a gap to report with what would close it, never a reason to guess.
 - When the profile lists a project skill for a step (e.g. a project `deploy-to-staging` skill),
   run that skill for the step instead of the generic instructions.
@@ -121,8 +123,8 @@ add it to `defaults.md`. Neither needs confirmation.
   Batch reads per source (one search or list call for all items), never one call per item.
 
 ### Delegating big reads
-A step that pulls large raw output (ticket threads, logs, metrics, traces) runs in one `Agent`
-subagent with `model: haiku`; the raw output then never enters the main context.
+A step that pulls large raw output (ticket threads, logs, metrics, traces) MUST run inside one
+`Agent` tool call with `model: haiku` (never inline); the raw output then never enters the main context.
 - The brief names the sources, target, window and the exact digest to return. Facts only: numbers,
   verbatim quotes of decisive lines, ids, links, and every query or filter used (so empty results can
   be judged). No conclusions, no guesses.
