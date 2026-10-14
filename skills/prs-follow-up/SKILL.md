@@ -1,7 +1,7 @@
 ---
 name: prs-follow-up
 description: >-
-  Follow up on every open PR you authored in this repo: update the branch with its base and resolve
+  Follow up on every open PR you authored, across all your repos and PR hosts: update the branch with its base and resolve
   conflicts, address review comments, and fix failed checks, then queue pushes and replies for
   confirmation. Reuses resolve-conflicts, address-comments and qa. Use on "follow up on my PRs",
   "babysit my PRs", "get my PRs green", "/prs-follow-up".
@@ -14,14 +14,22 @@ Follow `../../shared/policy.md`. Run `dev-skills:project-profile` first.
 Host commands: `../../shared/references/pr-hosts.md`.
 
 ## 1. List
-- The PRs given, otherwise every open PR authored by me in this repo, in one call
-  (GitHub: `gh pr list --author @me --state open --json number,title,url,headRefName,baseRefName,mergeable,mergeStateStatus,statusCheckRollup`).
-- Unresolved review threads for all of them in one batched query.
-- Per PR, note what it needs: **behind/conflicts**, **unaddressed comments**, **failed checks**.
-  Skip PRs that need nothing. None left: say `Nothing to follow up.` and stop.
+Every repo, not just the current one. The PRs given, otherwise every open PR authored by me on:
+- **GitHub, all repos:** `gh search prs --author @me --state open --json repository,number,title,url`,
+  once per logged-in account (`gh auth status`).
+- **Other hosts** (Bitbucket, GitLab): each repo with a profile in `~/.dev-skills/profiles/`, plus
+  the current repo, one list call per repo.
+
+Map each PR to its local checkout: the profile's `Repo:` path, else the current repo if it matches,
+else a clone whose `origin` matches under the parent folders of known checkouts. None found: clone it
+into `~/.dev-skills/repos/<project-slug>` and run `dev-skills:project-profile` there.
+
+Per repo, batch the reads: PR state, mergeability and checks in one call, unresolved review threads
+in one query. Per PR, note what it needs: **behind/conflicts**, **unaddressed comments**,
+**failed checks**. Skip PRs that need nothing. None left: say `Nothing to follow up.` and stop.
 
 ## 2. Per PR, in order
-Work in the PR's worktree (reuse one under `~/.dev-skills/worktrees/`, otherwise create it as in
+Load that repo's profile (`dev-skills:project-profile` from its checkout). Work in the PR's worktree (reuse one under `~/.dev-skills/worktrees/`, otherwise create it as in
 `implement`). Load the ticket once via `dev-skills:gather-context` (reuse `context.md`).
 
 1. **Update branch:** merge `origin/<base>` into the branch (never rebase a pushed branch). Conflicts
@@ -47,10 +55,10 @@ Stop and ask (unattended: put it in the report instead) when:
 ```
 Mode: <mode> (<source>) · Profile: <path>
 <n> PRs followed up, <m> need you.
-| PR | Branch | Comments | Checks | Notes |
-|---|---|---|---|---|
-| #12 <title> | merged base, 1 conflict REVIEW | 3 done, 1 declined | fixed lint | |
-| #15 <title> | up to date | — | rerun (flaky) | asked: <question> |
+| Repo | PR | Branch | Comments | Checks | Notes |
+|---|---|---|---|---|---|
+| api | #12 <title> | merged base, 1 conflict REVIEW | 3 done, 1 declined | fixed lint | |
+| web | #15 <title> | up to date | — | rerun (flaky) | asked: <question> |
 Assumed: ...
 <confirmation list>
 ```

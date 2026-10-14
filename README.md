@@ -20,7 +20,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `investigate` | Read-only root cause with logs, metrics, traces and data; drafts the ticket and support reply |
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR: fixes valid ones, short replies, resolves bot threads |
-| `prs-follow-up` | For each of your open PRs: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
+| `prs-follow-up` | For each of your open PRs in every repo: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
 | `inbox` | Messages waiting for you (Slack, ticket and PR comments) with draft replies; does what a message asks (review, investigate), draft-only |
 | `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
@@ -75,7 +75,7 @@ task's own changes, and env files copied into worktrees).
   ```
   Or just say "remember for this project: ...".
 - `defaults.md`: the same sections, applied to every project.
-- `work/`, `plans/`, `worktrees/`, `inbox/`: specs, investigations, sprint plans, worktrees and the last inbox run.
+- `work/`, `plans/`, `worktrees/`, `repos/`, `inbox/`: specs, investigations, sprint plans, worktrees, clones of repos you have no checkout of, and the last inbox run.
 
 ## Routines and scheduled runs
 

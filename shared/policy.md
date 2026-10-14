@@ -14,6 +14,7 @@ and shared-data actions taken outside a skill.
 | Sprint plans | `~/.dev-skills/plans/<board-slug>/<sprint-slug>.md` |
 | Inbox state | `~/.dev-skills/inbox/last-run` |
 | Worktrees | `~/.dev-skills/worktrees/<project-slug>/<branch>/` |
+| Clones of repos with no local checkout | `~/.dev-skills/repos/<project-slug>/` |
 | Tool notes (trackers, PR hosts, deploys, observability) | `<plugin root>/shared/references/*.md` |
 
 `<project-slug>`: from `git remote get-url origin`, lowercased, protocol, credentials and `.git` dropped,
