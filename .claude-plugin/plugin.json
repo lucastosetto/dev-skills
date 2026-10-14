@@ -1,6 +1,6 @@
 {
   "name": "dev-skills",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Repo-agnostic skills for the full software engineering loop: requirements, spec, QA, implementation, investigation, PR review and follow-up, deploys, monitoring, sprint planning and standups. Detects each project's tracker, PR host, deploy method and observability on its own.",
   "author": {
     "name": "Lucas Tosetto",

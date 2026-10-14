@@ -97,7 +97,14 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
   ✅, when an incident is marked resolved, or when someone else answered it and nothing after that
   answer names you or asks you directly. Threads you're only in go under **FYI** with `all`, and are
   left out otherwise.
-- **Tickets** (`../../shared/references/trackers.md`): one query per tracker for comments
+
+  Also drop a thread that is about one of your sprint tickets (it names the key, or a support ticket
+  number that ticket mentions): the ticket already tracks it. Drop tracker bot DMs about tickets
+  outside the sprint. Exception to the 24h limit: a bot alert that names you directly and has no
+  reply or ✅ stays listed whatever its age (search 7 days back for these).
+- **Tickets** (`../../shared/references/trackers.md`): on a board with sprints, only tickets in the
+  current sprint count; anything outside it (new assignments, comments, backlog) is left out. One
+  query per tracker for comments
   mentioning you or on tickets assigned to you, since the window start.
 
 **Reviews for you:** only PRs that list you as reviewer. **My PRs:** list one only when it needs
