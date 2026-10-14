@@ -120,6 +120,15 @@ add it to `defaults.md`. Neither needs confirmation.
 - Cheap first: check whether anything changed before heavy work, and stop early when nothing did.
   Batch reads per source (one search or list call for all items), never one call per item.
 
+### Delegating big reads
+A step that pulls large raw output (ticket threads, logs, metrics, traces) runs in one `Agent`
+subagent with `model: haiku`; the raw output then never enters the main context.
+- The brief names the sources, target, window and the exact digest to return. Facts only: numbers,
+  verbatim quotes of decisive lines, ids, links, and every query or filter used (so empty results can
+  be judged). No conclusions, no guesses.
+- Skip it when the read is a few small calls, or when the run is already on Haiku.
+- The main thread draws conclusions, and re-reads a source itself before a claim rests on one quote.
+
 ## Reports
 Start every final report with one line: `Mode: <mode> (<source>) · Profile: <path>`.
 Then the skill's own format. End with `Assumed:` (decisions made without asking, one per line)
