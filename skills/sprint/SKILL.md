@@ -84,8 +84,9 @@ In chat, skip the `#` heading and `Updated` line and add nothing else besides `R
 
 ## Today (`/sprint today`)
 1. Load the current sprint's plan. None: offer `/sprint` and stop.
-   Without `refresh`, if `<sprint-slug>.today.md` next to the plan is under 30 minutes old, show it
-   with its age, add `/sprint today refresh to re-check`, and stop.
+   Without `refresh`, if `<sprint-slug>.today.md` next to the plan was made today, show it, add
+   `/sprint today refresh to re-check`, and stop. The day plan is built once a day; live PR and
+   message status is `dev-skills:todo`'s job.
 2. **Not a business day** (weekend, holiday, day off): say `Nothing planned today (<weekday>).`, then
    show the next business day's rows as a preview with their real status (step 4). Don't re-plan.
 3. Business day: today's rows plus anything planned earlier that is not done.
@@ -98,7 +99,7 @@ In chat, skip the `#` heading and `Updated` line and add nothing else besides `R
 6. **Behind?** Compare done vs planned to date. If behind or the sprint changed, say so and ask
    `Re-plan from today?`; re-plan only on a yes, with the Plan steps.
 
-Save the report to `<sprint-slug>.today.md`.
+Save the report to `<sprint-slug>.today.md`, with a last line `Made: <YYYY-MM-DD HH:MM>`.
 
 ```
 Today (Tue 10/13) — on track | behind by <n> ticket(s) | ahead

@@ -22,8 +22,8 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `address-comments` | Works through review comments on your PR: fixes valid ones, short replies, resolves bot threads |
 | `prs-follow-up` | For each of your open PRs in every repo: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
-| `inbox` | Messages waiting for you (Slack, ticket and PR comments) with draft replies; does what a message asks (review, investigate), draft-only |
-| `sprint` | Day-by-day sprint plan over business days; `today`: today's tickets and their real status |
+| `todo` | One numbered report of what needs you: today's tickets from the day plan with real PR status, reviews for you, your PRs, unanswered messages and comments; builds missing plans, `replan` to redo them |
+| `sprint` | Day-by-day sprint plan over business days; `today`: the day plan, built once a day |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
 | `spec` | Implementation spec, or `rfc` for a structured RFC |
@@ -69,28 +69,29 @@ task's own changes, and env files copied into worktrees).
   - output: file ~/Documents/standups/{date}.md
   ### sprint
   - days_off: 2026-10-20
-  ### inbox
+  ### todo
   - deliver: slack-dm
   - channels: #oncall, #support
   ```
   Or just say "remember for this project: ...".
 - `defaults.md`: the same sections, applied to every project.
-- `work/`, `plans/`, `worktrees/`, `repos/`, `inbox/`: specs, investigations, sprint plans, worktrees, clones of repos you have no checkout of, and the last inbox run.
+- `work/`, `plans/`, `worktrees/`, `repos/`, `todo/`: specs, investigations, sprint plans, worktrees, clones of repos you have no checkout of, and the last To Do report.
 
 ## Routines and scheduled runs
 
 Skills work unattended (cloud routines, desktop scheduled tasks, `/loop`): they never stop to ask,
 never send anything you haven't approved, and put the confirmation list in their report. For
-example, a weekday hourly routine with the prompt `Run /inbox` and `deliver: slack-dm`.
+example, a weekday hourly routine with the prompt `Run /todo` and `deliver: slack-dm`.
 
 To skip runs when nothing happened, gate the routine on `shared/bin/changed <name> [max_age_minutes]`
 before starting Claude. It asks GitHub's `/notifications` with `If-Modified-Since` (a `304` costs no
 rate limit) and exits 0 to run (new activity, or the last run is older than `max_age`, default 120, so
 Slack and the tracker still sync), 1 to skip, 2 when it could not check.
 
-Repeat calls are cheap: `/inbox` reuses a digest younger than `fresh_minutes` (default 30) and keeps
-drafts for messages that didn't change; `/sprint today` reuses a status under 30 minutes old. Add
-`refresh` to force a new check.
+Repeat calls are cheap: the sprint plan is built once per sprint and the day plan once a day;
+`/todo` reads both as files, gets GitHub from one GraphQL call (`shared/bin/todo-github`), reuses a
+report younger than `fresh_minutes` (default 30) and only looks again at messages that changed. Add
+`refresh` to force a new check, `replan` or `replan sprint` to rebuild the plans.
 
 ## Requirements
 
