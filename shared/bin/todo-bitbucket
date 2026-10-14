@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Bitbucket part of /todo, no model needed:
-#   todo-bitbucket <my Atlassian account id> [workspace/repo ...]
-# Repos default to every ~/.dev-skills/profiles/bitbucket.org__<workspace>__<repo>.md.
+#   todo-bitbucket <my Atlassian account id> [workspace/repo | folder ...]
+# Repos default to every ~/.dev-skills/profiles/bitbucket.org__<workspace>__<repo>.md; a folder argument
+# keeps only those profiles whose `Repo:` path is inside it.
 # Credentials: BITBUCKET_USERNAME (Atlassian email) and BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN.
 # Prints JSON: {me, reviews: open PRs listing me as reviewer that nobody (me included) has approved, mine: my
 # open PRs}. Each PR carries approvals, changes requested, CI, merge conflicts, commits behind its
@@ -10,13 +11,22 @@
 set -euo pipefail
 me=${1:?usage: todo-bitbucket <my Atlassian account id> [workspace/repo ...]}
 shift
-repos=("$@")
+repos=() under=()
+for a in "$@"; do
+  case $a in /*|~*) under+=("${a/#\~/$HOME}") ;; *) repos+=("$a") ;; esac
+done
 if [ ${#repos[@]} -eq 0 ]; then
   for f in "${DEV_SKILLS_HOME:-$HOME/.dev-skills}"/profiles/bitbucket.org__*__*.md; do
     [ -e "$f" ] || continue
+    if [ ${#under[@]} -gt 0 ]; then
+      path=$(sed -n 's/^Repo: \([^ ]*\).*/\1/p' "$f" | head -1) ok=
+      for u in "${under[@]}"; do case $path/ in "${u%/}"/*) ok=1 ;; esac; done
+      [ -n "$ok" ] || continue
+    fi
     f=${f##*/bitbucket.org__}; f=${f%.md}; repos+=("${f%%__*}/${f#*__}")
   done
 fi
+[ ${#repos[@]} -gt 0 ] || { jq -n --arg me "$me" '{me: $me, reviews: [], mine: []}'; exit 0; }
 auth="${BITBUCKET_USERNAME:?BITBUCKET_USERNAME not set}:${BITBUCKET_PASSWORD:-${BITBUCKET_API_TOKEN:?BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN not set}}"
 api=https://api.bitbucket.org/2.0/repositories
 bots='^(Oscar|.*[Bb]ot|Bitbucket.*|Pipelines)$'

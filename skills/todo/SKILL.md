@@ -25,6 +25,9 @@ Config from `### todo` (profile `## Mine`, then `defaults.md`):
 - `managers`: Slack names or handles of your managers. Optional: only needed when your Slack profile
   doesn't say who they are. The routine prompt can also give them (`Managers: ...`).
 - `fresh_minutes`: how long a report is reused (default 30).
+- `projects`: a folder. Only profiles whose `Repo:` path is inside it count, for boards, plans and
+  PR hosts; every other profile and its plans belong to another account and are never read. The
+  routine prompt can also give it (`Projects: <folder>`). Default: every profile.
 - `on_call`: `yes` (default) or `no`. The routine prompt can also give it (`On call: no`). With `no`,
   Support only keeps threads that name you, and recurring on-call or support tickets (the plan's
   `Every day` line) are left out.
@@ -51,8 +54,8 @@ Skipped with `refresh` or `replan`.
   2: go on.
 
 ## 1. Plans (no model work when they exist)
-**Boards:** the tracker board of every project with a profile in `~/.dev-skills/profiles/` plus the
-current repo (`dev-skills:project-profile` when it has none). Each project uses its own profile's
+**Boards:** the tracker board of every project with a profile in `~/.dev-skills/profiles/` (only those
+inside `projects` when set) plus the current repo (`dev-skills:project-profile` when it has none). Each project uses its own profile's
 `tracker` (Jira, Linear, ClickUp, GitHub; `../../shared/references/trackers.md`). A tracker without
 sprints (no sprints/cycles, no ClickUp Sprints folder) has no plan: list your open tickets there
 under **Assigned** instead, from one query. No tracker: skip.
@@ -79,7 +82,7 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
 - **GitHub:** run `<plugin root>/shared/bin/todo-github [since]` once: one GraphQL call returning
   review requests, your open PRs (review decision, mergeable, CI, unresolved threads where someone
   else spoke last) and open issues/PRs mentioning you. Don't call `gh` per PR.
-- **Bitbucket:** run `<plugin root>/shared/bin/todo-bitbucket <your Atlassian account id>` once
+- **Bitbucket:** run `<plugin root>/shared/bin/todo-bitbucket <your Atlassian account id> [projects folder]` once
   (the id from the Atlassian user info; it is the same account as Jira's). It covers every repo with
   a Bitbucket profile: PRs listing you as reviewer that nobody has approved, and your open PRs with
   approvals, CI, conflicts, commits behind base and human comments. Don't call the Bitbucket MCP.
