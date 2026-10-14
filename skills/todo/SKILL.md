@@ -7,7 +7,7 @@ description: >-
   plans first when they are missing. Report only: no drafts, nothing sent. Built for routines and
   scheduled runs too. Use on "what's on my plate", "what should I do", "to do", "any mentions",
   "check my messages", "/todo", "/todo replan".
-argument-hint: "[refresh | replan | replan sprint] [json]"
+argument-hint: "[refresh | replan | replan sprint] [since <n>h|<n>d] [all] [json]"
 model: haiku
 ---
 
@@ -20,7 +20,10 @@ and other skills pick items from it.
 Config from `### todo` (profile `## Mine`, then `defaults.md`):
 - `deliver`: `chat` (default), `slack-dm` (send the report to your own Slack DM, no approval
   needed), or `file <path pattern>` (`{date}` allowed, outside any repo).
-- `channels`: Slack channels to scan for questions without a mention (e.g. on-call, support).
+- `channels`: extra Slack channels to scan for bugs, incidents and support questions without a
+  mention. Optional: support and incident channels you are in are found on their own.
+- `managers`: Slack names or handles of your managers. Optional: only needed when your Slack profile
+  doesn't say who they are. The routine prompt can also give them (`Managers: ...`).
 - `fresh_minutes`: how long a report is reused (default 30).
 
 State lives in `~/.dev-skills/todo/` (create it): `last.md` (report), `last.json` (items),
@@ -32,6 +35,8 @@ State lives in `~/.dev-skills/todo/` (create it): `last.md` (report), `last.json
 - `replan`: rebuild today's plan (`dev-skills:sprint` `today refresh`), then report.
 - `replan sprint`: re-plan the sprint from today (`dev-skills:sprint`, re-plan approved), then
   today's plan, then report.
+- `since <n>h|<n>d`: how far back Slack is read (default `24h`).
+- `all`: also list Slack threads you're in that don't need you, under **FYI**.
 - `json`: also end the reply with the items as one fenced ```json block (the `last.json` content).
 
 ## 0. Reuse before re-checking
@@ -64,19 +69,31 @@ Per board:
 `replan` and `replan sprint` rebuild as described in **Arguments** before this step reads them.
 
 ## 2. Live sources
-Messages count when they are from people and you haven't answered or reacted to them as handled.
-Skip any source that isn't connected and list it under **Gaps**.
+Messages count when they are from people and you haven't answered them or reacted with ✅ (👀 only
+means you saw it). Skip any source that isn't connected and list it under **Gaps**.
 - **GitHub:** run `<plugin root>/shared/bin/todo-github [since]` once: one GraphQL call returning
   review requests, your open PRs (review decision, mergeable, CI, unresolved threads where someone
   else spoke last) and open issues/PRs mentioning you. Don't call `gh` per PR.
 - **Other PR hosts** (Bitbucket, GitLab; `../../shared/references/pr-hosts.md`): per repo with a
   profile on that host, one call for your open PRs and one for PRs waiting for your review.
-- **Slack:** mentions, DMs, new replies in threads you're in, new questions in `channels`.
+- **Slack:** only messages from the last 24h (or `since`), in this order:
+  1. **Managers:** DMs from your managers. Find them from your Slack profile (manager field, title,
+     team) or the `managers` config; none found: skip this tier, no gap.
+  2. **DMs:** other direct and group DMs.
+  3. **Mentions:** you or a user group you're in.
+  4. **Support:** bugs, incidents, customer issues and support questions about your work (your
+     repos, services, tickets) in support and incident channels you're in and `channels`.
+
+  Drop a thread as resolved when you replied after the last ask, when you or the asker reacted with
+  ✅, when an incident is marked resolved, or when someone else answered it and nothing after that
+  answer names you or asks you directly. Threads you're only in go under **FYI** with `all`, and are
+  left out otherwise.
 - **Tickets** (`../../shared/references/trackers.md`): one query per tracker for comments
   mentioning you or on tickets assigned to you, since the window start.
 
-**Window:** the time in `last-run`, else the previous business day's start. Unanswered items are
-listed whatever the window; the window only decides what's marked **new**.
+**Window:** the time in `last-run`, else the previous business day's start; it decides what's marked
+**new**. Unanswered GitHub and ticket items are listed whatever the window. Slack is limited to its
+24h (or `since`) range.
 
 **Item cache** `items.json`, keyed by id (PR URL, Slack permalink, comment id), holding its last
 activity time and line. An item whose last activity matches the cache reuses its line as is. Only
@@ -91,7 +108,7 @@ run, dropping items that are gone.
 ## 4. Report
 Number every item once, top to bottom, so you and other skills can refer to them (`#3`). One line
 each: source, who, age, what it needs. Order inside each section: incidents and production first,
-then people blocked on you, then oldest first.
+then people blocked on you, then oldest first. Slack goes in the four tiers' sections, in that order.
 
 ```
 To Do — Wed 10/14 09:12 · <board> <sprint> · on track | behind by <n>
@@ -104,17 +121,22 @@ Carried over:
 4. PROJ-118: <summary> — a/b#38 approved, CI failing
 Assigned (<board without sprints>):
 5. DEV-77: <summary> — in progress
-Urgent:
-6. Slack #oncall, Ana (20m, new): "checkout failing for EU"
+Managers:
+6. Slack DM, Ana (20m, new): "can we talk about the rollout?"
 Reviews for you:
 7. a/b#52 "Add retries" by dan (2h) — +120/−30, CI passing
 My PRs:
 8. a/b#41 "Fix y" — conflicts
-Messages:
+DMs:
 9. Slack DM, Dan (1h): "can you check the export?"
-10. PROJ-125, Carol (1d): "<question>"
-FYI:
-11. Slack thread #team, Eve: "<summary>"
+Mentions:
+10. Slack #team, Eve (3h): "@backend who owns the importer?"
+Messages:
+11. PROJ-125, Carol (1d): "<question>"
+Support:
+12. Slack #oncall, Bo (40m, new): "checkout failing for EU"
+FYI (only with `all`):
+13. Slack thread #team, Eve: "<summary>"
 Quiet: <sources checked with nothing new>
 Gaps: <sources not reachable>
 ```

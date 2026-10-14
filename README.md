@@ -22,7 +22,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `address-comments` | Works through review comments on your PR: fixes valid ones, short replies, resolves bot threads |
 | `prs-follow-up` | For each of your open PRs in every repo: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
-| `todo` | One numbered report of what needs you: today's tickets from the day plan with real PR status, reviews for you, your PRs, unanswered messages and comments; builds missing plans, `replan` to redo them |
+| `todo` | One numbered report of what needs you: today's tickets from the day plan with real PR status, reviews for you, your PRs, unanswered Slack (managers, DMs, mentions, support; last 24h) and comments; builds missing plans, `replan` to redo them |
 | `sprint` | Day-by-day sprint plan over business days; `today`: the day plan, built once a day |
 | `standup` | Short bullet update since the last daily from commits, PRs, reviews, tickets and sessions |
 | `demo` | Presentation-friendly walkthrough of an implementation |
