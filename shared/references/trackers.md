@@ -29,7 +29,7 @@ Use the section matching the profile's `tracker`. Find tools with ToolSearch.
   or an `app.clickup.com/t/<id>` URL.
 - Issue: `clickup_get_task` (with comments and subtasks).
 - Sprint = a list in the space's Sprints folder, named with its dates (e.g. `Sprint 12 (10/6 - 10/19)`).
-  Find the folder once (`clickup_get_folder` / `clickup_search`) and note `sprint_folder` in the profile.
+  Find the folder once (`clickup_get_workspace_hierarchy`) and note `sprint_folder` in the profile.
   Current: the list whose dates hold today; upcoming: the next one. Dates from the name, else the
   list's start/due dates (`clickup_get_list`). My tickets: `clickup_filter_tasks` with that list in
   `list_ids` and me in `assignees`, every page (`has_more`). Rank: the list's order.

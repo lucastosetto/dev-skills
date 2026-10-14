@@ -122,7 +122,7 @@ Leave out empty sections. Several boards: one `Today`, `Carried over` or `Assign
 headed by the board name.
 
 ## 5. Deliver
-Write the report per `deliver` and to `last.md`. Write `last.json`: `{"at": <ISO time>, "items":
+Always save the state files below, also with `json` and in unattended runs. Write the report per `deliver` and to `last.md`. Write `last.json`: `{"at": <ISO time>, "items":
 [{"n", "section", "kind": "ticket"|"pr"|"slack"|"comment"|"plan", "id", "url", "title", "who",
 "at", "status", "text"}]}` with the same numbers. Save the run time to `last-run`. Nothing else is
 sent.
