@@ -44,8 +44,10 @@ Skipped with `refresh` or `replan`.
 
 ## 1. Plans (no model work when they exist)
 **Boards:** the tracker board of every project with a profile in `~/.dev-skills/profiles/` plus the
-current repo (`dev-skills:project-profile` when it has none). Projects without a sprint board
-(no tracker, or no sprints/cycles) have no plan; skip them here.
+current repo (`dev-skills:project-profile` when it has none). Each project uses its own profile's
+`tracker` (Jira, Linear, ClickUp, GitHub; `../../shared/references/trackers.md`). A tracker without
+sprints (no sprints/cycles, no ClickUp Sprints folder) has no plan: list your open tickets there
+under **Assigned** instead, from one query. No tracker: skip.
 
 Per board:
 1. **Sprint plan:** a file in `~/.dev-skills/plans/<board-slug>/` whose header end date is today or
@@ -100,21 +102,23 @@ Today:
 3. PROJ-121: <summary> — not started
 Carried over:
 4. PROJ-118: <summary> — a/b#38 approved, CI failing
+Assigned (<board without sprints>):
+5. DEV-77: <summary> — in progress
 Urgent:
-5. Slack #oncall, Ana (20m, new): "checkout failing for EU"
+6. Slack #oncall, Ana (20m, new): "checkout failing for EU"
 Reviews for you:
-6. a/b#52 "Add retries" by dan (2h) — +120/−30, CI passing
+7. a/b#52 "Add retries" by dan (2h) — +120/−30, CI passing
 My PRs:
-7. a/b#41 "Fix y" — conflicts
+8. a/b#41 "Fix y" — conflicts
 Messages:
-8. Slack DM, Dan (1h): "can you check the export?"
-9. PROJ-125, Carol (1d): "<question>"
+9. Slack DM, Dan (1h): "can you check the export?"
+10. PROJ-125, Carol (1d): "<question>"
 FYI:
-10. Slack thread #team, Eve: "<summary>"
+11. Slack thread #team, Eve: "<summary>"
 Quiet: <sources checked with nothing new>
 Gaps: <sources not reachable>
 ```
-Leave out empty sections. Several boards: one `Today` (and `Carried over`) section per board,
+Leave out empty sections. Several boards: one `Today`, `Carried over` or `Assigned` section per board,
 headed by the board name.
 
 ## 5. Deliver

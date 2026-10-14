@@ -30,7 +30,7 @@ Reads only. Record each value with its source (`file:line`, command, or `user`) 
 | Field | Signals |
 |---|---|
 | `pr_host` | `git remote get-url origin` host; tool available (`gh`, `glab`, Bitbucket MCP via ToolSearch) |
-| `tracker`, `ticket_key` | ticket keys in `git branch -a` and recent `git log` subjects; `.github/ISSUE_TEMPLATE`; links in README/CONTRIBUTING; connected tracker MCPs (ToolSearch "jira", "linear") |
+| `tracker`, `ticket_key` | ticket keys in `git branch -a` and recent `git log` subjects; `.github/ISSUE_TEMPLATE`; links in README/CONTRIBUTING; connected tracker MCPs (ToolSearch "jira", "linear", "clickup"); `app.clickup.com` links |
 | `base_branch`, `branch_naming`, `pr_template` | `git symbolic-ref refs/remotes/origin/HEAD`; recent branch names; `.github/pull_request_template.md` or similar; docs |
 | `ci` | `.github/workflows`, `bitbucket-pipelines.yml`, `.gitlab-ci.yml`, `.circleci` |
 | `commands.test`, `commands.lint`, `commands.boot`, `commands.setup` | repo `CLAUDE.md`, `README`, `CONTRIBUTING`, `docs/`, `package.json` scripts, `Makefile`, `Procfile`, compose files, pre-commit config |
