@@ -100,8 +100,9 @@ means you saw it). Skip any source that isn't connected and list it under **Gaps
 
   Also drop a thread that is about one of your sprint tickets (it names the key, or a support ticket
   number that ticket mentions): the ticket already tracks it. Drop tracker bot DMs about tickets
-  outside the sprint. Exception to the 24h limit: a bot alert that names you directly and has no
-  reply or ✅ stays listed whatever its age (search 7 days back for these).
+  outside the sprint. Exception to the 24h limit: run one more search for mentions of you 7 days
+  back and keep only alerts posted by bots or apps that name you directly and that nobody has
+  replied to or marked ✅, whatever their age.
 - **Tickets** (`../../shared/references/trackers.md`): on a board with sprints, only tickets in the
   current sprint count; anything outside it (new assignments, comments, backlog) is left out. One
   query per tracker for comments
