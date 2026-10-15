@@ -8,6 +8,8 @@ Use the section matching the profile's `tracker`. Find tools with ToolSearch.
   (often `customfield_10016` or a field named "Story Points"; check field metadata once and note it
   in the profile).
 - Key pattern: `[A-Z][A-Z0-9]+-\d+`.
+- JQL searches: pass only the fields the step uses (e.g. `summary,status,assignee,updated`) and a
+  small `maxResults`; the default field set is large.
 - My open sprint: JQL `assignee = currentUser() AND sprint in openSprints() ORDER BY rank`.
   Upcoming: `sprint in futureSprints()`. Sprint start/end dates: the issue's sprint field.
 - My recent activity: JQL `updated >= "<date>" AND (assignee = currentUser() OR comment ~ currentUser())`,

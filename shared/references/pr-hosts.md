@@ -24,9 +24,12 @@ stacked on an unmerged branch, not the default branch.
   Reply to a thread: `.../pulls/<n>/comments/<id>/replies`.
 
 ## Bitbucket
-- Tools: Bitbucket MCP (get pull request, diff, comments, create PR, create comment), found via
-  ToolSearch "bitbucket pull request".
-- List responses can be large and spill to a file: parse with `jq`.
+- PR and its comments: `<plugin root>/shared/bin/bb-pr <workspace/repo> <id> [--all]` prints the PR
+  (branches, head, reviewers with approval/state) and its open threads (path, line, author, body) in
+  one small JSON. Use it instead of the MCP's get pull request / list comments, which return 20–30k
+  characters per call. `--all` adds resolved threads.
+- Other actions: Bitbucket MCP (diff, create PR, create/reply comment), found via ToolSearch
+  "bitbucket pull request". List responses can be large and spill to a file: parse with `jq`.
 - Waiting on my review: open PRs where I'm in `reviewers` and haven't approved (`participants[].approved`).
 - No private draft reviews: keep review drafts in the report.
 - Comments: `inline.path` / `inline.to` for location; `parent.id` for replies; `deleted` and

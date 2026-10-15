@@ -114,8 +114,9 @@ add it to `defaults.md`. Neither needs confirmation.
 - Find tools by capability, not by hardcoded name: use ToolSearch with keywords (e.g. "jira issue",
   "linear issue", "bitbucket pull request", "grafana loki", "sentry issue", "slack message").
 - Pick the environment that matches the task (e.g. a `-prod` server for a production incident).
-- When lean-ctx tools (`ctx_shell`, `ctx_read`, `ctx_search`) are connected, use them for test runs,
-  logs and large file reads; their output is compressed. Never required: native tools otherwise.
+- Ask for only what the step needs: a script in `shared/bin/` when one covers the read, else the
+  tool's field/limit parameters (`fields`, `maxResults`, `pagelen`) or a CLI piped through `jq`.
+  Every tool result stays in the context and is re-sent on every later turn.
 - A missing source is a gap to report with what would close it, never a reason to guess.
 - When the profile lists a project skill for a step (e.g. a project `deploy-to-staging` skill),
   run that skill for the step instead of the generic instructions.

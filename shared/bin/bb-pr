@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# One Bitbucket PR with only the fields skills use, instead of the MCP's full dumps:
+#   bb-pr <workspace/repo> <pr id> [--all]
+# Credentials: BITBUCKET_USERNAME (Atlassian email) and BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN.
+# Prints JSON: {pr: title, description, state, branches, head, author, url, reviewers with approval/state,
+# threads: [{id, path, line, resolved, comments: [{id, by, by_id, at, body}]}]}. Deleted and pending
+# comments are dropped; resolved threads too unless --all.
+set -euo pipefail
+r=${1:?usage: bb-pr <workspace/repo> <pr id> [--all]} id=${2:?usage: bb-pr <workspace/repo> <pr id> [--all]}
+all=false; [ "${3:-}" = --all ] && all=true
+auth="${BITBUCKET_USERNAME:?BITBUCKET_USERNAME not set}:${BITBUCKET_PASSWORD:-${BITBUCKET_API_TOKEN:?BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN not set}}"
+api=https://api.bitbucket.org/2.0/repositories/$r/pullrequests/$id
+get() { curl -sfL --retry 1 -u "$auth" "$1"; }
+
+pr=$(get "$api?fields=id,title,description,state,draft,author.display_name,source.branch.name,source.commit.hash,destination.branch.name,links.html.href,participants.user.display_name,participants.user.account_id,participants.role,participants.approved,participants.state")
+url="$api/comments?pagelen=100&fields=next,values.id,values.parent.id,values.user.display_name,values.user.account_id,values.created_on,values.deleted,values.pending,values.resolution,values.content.raw,values.inline.path,values.inline.to,values.inline.from"
+comments='[]'
+while [ -n "$url" ]; do
+  page=$(get "$url")
+  comments=$(jq -c --argjson acc "$comments" '$acc + .values' <<<"$page")
+  url=$(jq -r '.next // empty' <<<"$page")
+done
+
+jq -n --argjson pr "$pr" --argjson c "$comments" --argjson all "$all" '
+  ($c | map({key: (.id | tostring), value: (.parent.id // null)}) | from_entries) as $up
+  | def root: . as $i | ($up[$i | tostring]) as $p | if $p == null then $i else ($p | root) end;
+  ($c | map(select((.deleted | not) and (.pending | not)))) as $live
+  | {pr: {number: $pr.id, title: $pr.title, description: $pr.description, state: $pr.state, draft: $pr.draft,
+          author: $pr.author.display_name, branch: $pr.source.branch.name, head: $pr.source.commit.hash,
+          base: $pr.destination.branch.name, url: $pr.links.html.href,
+          reviewers: [$pr.participants[] | {name: .user.display_name, id: .user.account_id, role, approved, state}]},
+     threads: [$c[] | select(.parent == null) | . as $t
+       | {id, path: .inline.path, line: (.inline.to // .inline.from), resolved: (.resolution != null),
+          comments: ([$live[] | select((.id | root) == $t.id) | {id, by: .user.display_name, by_id: .user.account_id,
+                     at: .created_on, body: .content.raw}] | sort_by(.at))}]
+       | map(select((.comments | length) > 0 and ($all or (.resolved | not))))}'
