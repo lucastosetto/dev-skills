@@ -53,7 +53,6 @@ Stop and ask (unattended: put it in the report instead) when:
 
 ## Report
 ```
-Mode: <mode> (<source>) · Profile: <path>
 <n> PRs followed up, <m> need you.
 | Repo | PR | Branch | Comments | Checks | Notes |
 |---|---|---|---|---|---|

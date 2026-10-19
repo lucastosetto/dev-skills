@@ -59,7 +59,6 @@ Replies are short, especially to humans. Per thread:
 
 ## Report
 ```
-Mode: <mode> (<source>) · Profile: <path>
 PR <link>
 | # | Comment (short) | Decision | Change |
 |---|---|---|---|

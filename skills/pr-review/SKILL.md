@@ -52,7 +52,6 @@ the author called out as deliberate limits, or a "checked and fine" list.
 
 ## Output
 ```
-Mode: <mode> (<source>) · Profile: <path>
 PR <link> — <title> → <target> · Requirements: <ticket link | PR description only>
 Re-review: <thread — addressed/partly/not addressed/answered> (re-review only)
 Findings:

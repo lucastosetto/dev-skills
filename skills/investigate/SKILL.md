@@ -76,7 +76,6 @@ evidence, and note whether the product made the mistake easy.
 Save `investigation.md` (and the final repro script, if any) in the work folder. Print:
 
 ```markdown
-Mode: <mode> (<source>) · Profile: <path>
 # <issue> — <one-line title>
 **Problem:** <who / what / expected vs actual / when>
 **Category:** software | client action | data/config | third party/infra | working as designed

@@ -72,7 +72,6 @@ Not caused by the deploy: say so with the evidence and suggest `dev-skills:inves
 
 ## Report
 ```
-Mode: <mode> (<source>) · Profile: <path>
 <env> — <ship ref> — <status>
 Changelog: <n PRs> (above)
 Smoke: <pass | failures>

@@ -133,8 +133,7 @@ A step that pulls large raw output (ticket threads, logs, metrics, traces) MUST 
 - The main thread draws conclusions, and re-reads a source itself before a claim rests on one quote.
 
 ## Reports
-Start every final report with one line: `Mode: <mode> (<source>) · Profile: <path>`.
-Then the skill's own format. End with `Assumed:` (decisions made without asking, one per line)
+Do not print the mode or profile path in reports. Use the skill's own format. End with `Assumed:` (decisions made without asking, one per line)
 when there are any, then the confirmation list when there is one.
 
 ### Compact by default

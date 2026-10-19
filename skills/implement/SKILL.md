@@ -60,7 +60,6 @@ Add to the confirmation list, as applicable:
 
 ## Report
 ```
-Mode: <mode> (<source>) · Profile: <path>
 <TICKET> — <title>
 Worktree: <path>  Branch: <name>  Commit: <sha | not committed>
 Changed:
