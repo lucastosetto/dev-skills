@@ -20,6 +20,7 @@ Or inside Claude Code: `/plugin marketplace add lucastosetto/dev-skills`, then `
 | `investigate` | Read-only root cause with logs, metrics, traces and data; drafts the ticket and support reply |
 | `pr-review` | Critical-only review against the linked ticket; `re-review` checks follow-up rounds |
 | `address-comments` | Works through review comments on your PR: fixes valid ones, short replies, resolves bot threads |
+| `pr-follow-up` | For one PR you authored: updates the branch, resolves conflicts, addresses comments, fixes failed checks; offers a scan of all your PRs when none is given |
 | `prs-follow-up` | For each of your open PRs in every repo: updates the branch, resolves conflicts, addresses comments, fixes failed checks |
 | `deploy` | `staging` or `prod`: changelog, deploy, read-only smoke test, monitoring, rollback |
 | `todo` | One numbered report of what needs you: today's tickets from the day plan with real PR status, reviews for you, your PRs, unanswered Slack (managers, DMs, mentions, support; last 24h) and comments; builds missing plans, `replan` to redo them |
