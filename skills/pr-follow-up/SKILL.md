@@ -3,7 +3,7 @@ name: pr-follow-up
 description: >-
   Follow up on one PR you authored: update the branch with its base and resolve conflicts, address
   review comments, and fix failed checks, then queue the push, replies and thread resolution for
-  confirmation. With no PR given, offers to scan all your open PRs. Reuses resolve-conflicts,
+  confirmation. With no PR given, uses the PR from the conversation, else asks for a link or offers to scan all your open PRs. Reuses resolve-conflicts,
   address-comments and qa. Use on "follow up on this PR", "get this PR green", "/pr-follow-up <url>".
 argument-hint: "[pr url|number]"
 ---
@@ -16,8 +16,9 @@ Host commands: `../../shared/references/pr-hosts.md`.
 ## 1. Pick the PR
 - A PR url or number given: use it.
 - A ticket url or key given: find its open PR (branch or title carries the key) on the project's PR host.
-- Nothing given: the current branch's open PR if there is one; otherwise ask once whether to scan all
-  your open PRs, and on yes run `dev-skills:prs-follow-up` and stop.
+- Nothing given: the PR this conversation has been about (last PR url, number or branch discussed or
+  worked on here). If none, ask once for the PR link, or whether to scan all your open PRs; on "all"
+  run `dev-skills:prs-follow-up` and stop. Don't guess from the current branch.
 
 Map the PR to its checkout and worktree as in `dev-skills:prs-follow-up` step 1.
 
