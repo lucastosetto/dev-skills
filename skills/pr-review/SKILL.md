@@ -60,8 +60,20 @@ Verdict: approve | approve with nits skipped | request changes
 ```
 No findings: one line saying so.
 
+## Approve without asking
+When the verdict is `approve` and you are confident: no findings, requirements met, every risky path
+traced and tested, nothing you could not verify. Submit the approval yourself with no confirmation
+(this is the user's standing permission, so it overrides the confirmation rules in the policy for
+approvals only) and reply with one line: `Approved <PR link>.` No report, no draft comments.
+A failed submit: say so and stop, no retry with another tool.
+
+If you recommend approval but something is tricky (a risky area, an assumption you could not
+verify, a judgment call, a behavior change worth a human look): do not approve. Reply with the
+verdict and only the points to check, then ask whether to approve.
+
+## Other verdicts
 Then the confirmation list: one draft inline comment per finding, shown exactly as it will be posted
 (problem, one scenario, the fix;
 no preamble), on the most relevant line of the **new** file version, plus the review verdict
-(approve / request changes) when the user wants it submitted. Follow project PR-comment rules from
+(request changes) when the user wants it submitted. Follow project PR-comment rules from
 the profile if present. Post only approved items, one tool each, no retries with another tool.
