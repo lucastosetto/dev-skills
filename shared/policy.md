@@ -60,8 +60,9 @@ First match wins:
 | **Production deploy or rollback** | **list, every time** | **list, every time** | **list, every time** |
 
 Bold rows never loosen. These checkpoints sit on top of Claude Code's own permission prompts and
-never bypass them. Never run commands against production data stores yourself: write read-only
-console commands and hand them to the user.
+never bypass them. Read-only queries against a production read replica are fine to run yourself.
+Never run commands against the primary production data store yourself (and never write to a
+replica): write the console commands and hand them to the user.
 
 In `autonomous` and `balanced`, do not stop mid-run for decisions: record them and keep going.
 In `guided`, ask at each checkpoint as it is reached.
