@@ -34,7 +34,7 @@ while IFS=$'\t' read -r uuid name; do
   loc=$(curl -s -o /dev/null -w '%{redirect_url}' -u "$auth" "$api/$p/steps/$(jq -rn --arg u "$uuid" '$u|@uri')/log")
   if [ -z "$loc" ]; then echo "(no log)"; continue; fi
   log=$(curl -sf "$loc" | sed $'s/\x1b\\[[0-9;]*m//g')
-  grep -E '^rspec \./|[0-9]+ examples?, [0-9]+ failures?|^FAILED |^--- FAIL|^ *(✕|●) |Tests?: .*failed|[0-9]+ failed' <<<"$log" | head -n "$n" || true
+  grep -E '^rspec \./|[0-9]+ examples?, [0-9]+ failures?|^FAILED [^ ]+::|^--- FAIL|^ *(✕|●) |Tests?: .*failed|[0-9]+ failed' <<<"$log" | head -n "$n" || true
   grep -E -A4 'Failure/Error|Error:|^E  |^diff --git|^[+-][^ +-]|offenses? detected|problems? \(' <<<"$log" |
     grep -v -E '^(\+ |--$)' | head -n "$n" || true
 done
