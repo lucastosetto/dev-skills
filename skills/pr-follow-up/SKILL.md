@@ -45,7 +45,7 @@ once via `dev-skills:gather-context` (reuse `context.md`).
 2. **Comments:** run `dev-skills:address-comments` on the PR. Its rules apply: check each comment
    makes sense, reply `Done! @<commenter>` when fixed or a one-sentence reason when not, resolve bot
    threads and leave human ones open, and tag the ticket's author when a comment contradicts the ticket.
-3. **Failed checks:** read the failing logs. Real failure: reproduce locally, fix, commit. Flaky or
+3. **Failed checks:** read the failing logs (how, per host: `shared/references/pr-hosts.md`). Real failure: reproduce locally, fix, commit. Flaky or
    infra (timeout, runner, network, unrelated to the diff): queue a rerun instead of a code change.
    Failures caused by the base update or a comment change are fixed here too.
 4. Run `dev-skills:qa` in `verify` mode on everything changed in this PR.

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Why a Bitbucket pipeline failed, instead of the MCP's step list (10 steps per page) and step logs (404 without braces):
+#   bb-ci <workspace/repo> <pipeline build number or {uuid}> [lines]
+#   bb-ci <workspace/repo> --branch <branch> [lines]   (the branch's latest pipeline)
+# Credentials: BITBUCKET_USERNAME (Atlassian email) and BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN.
+# Prints the pipeline's commit and result, then for each failed step its name and the log lines that explain it
+# (failures, errors, failing spec paths, summaries, diffs), at most [lines] (default 80) per step.
+set -euo pipefail
+usage='usage: bb-ci <workspace/repo> <build number | {uuid} | --branch <branch>> [lines]'
+r=${1:?$usage} p=${2:?$usage}
+auth="${BITBUCKET_USERNAME:?BITBUCKET_USERNAME not set}:${BITBUCKET_PASSWORD:-${BITBUCKET_API_TOKEN:?BITBUCKET_PASSWORD or BITBUCKET_API_TOKEN not set}}"
+api=https://api.bitbucket.org/2.0/repositories/$r/pipelines
+get() { curl -sf --retry 1 -u "$auth" "$1"; }
+if [ "$p" = --branch ]; then
+  b=${3:?$usage}; n=${4:-80}
+  p=$(get "$api/?target.branch=$(jq -rn --arg b "$b" '$b|@uri')&sort=-created_on&pagelen=1" | jq -r '.values[0].build_number // empty')
+  [ -n "$p" ] || { echo "no pipeline on $b" >&2; exit 1; }
+else
+  n=${3:-80}
+fi
+p=$(jq -rn --arg p "$p" '$p|@uri')
+
+get "$api/$p" | jq -r '"pipeline \(.build_number) on \(.target.commit.hash[0:10]) (\(.target.ref_name // "?")): \(.state.result.name // .state.name)"'
+url="$api/$p/steps/?pagelen=100"
+steps='[]'
+while [ -n "$url" ]; do
+  page=$(get "$url")
+  steps=$(jq -c --argjson acc "$steps" '$acc + .values' <<<"$page")
+  url=$(jq -r '.next // empty' <<<"$page")
+done
+jq -r '.[] | select((.state.result.name // "") | test("FAILED|ERROR")) | [.uuid, .name] | @tsv' <<<"$steps" |
+while IFS=$'\t' read -r uuid name; do
+  echo; echo "== $name"
+  loc=$(curl -s -o /dev/null -w '%{redirect_url}' -u "$auth" "$api/$p/steps/$(jq -rn --arg u "$uuid" '$u|@uri')/log")
+  if [ -z "$loc" ]; then echo "(no log)"; continue; fi
+  log=$(curl -sf "$loc" | sed $'s/\x1b\\[[0-9;]*m//g')
+  grep -E '^rspec \./|^[0-9]+ examples?, [0-9]+ failures?' <<<"$log" | head -n "$n" || true
+  grep -E -A4 'Failure/Error|Error:|^diff --git|^[+-][^ +-]|offenses? detected' <<<"$log" |
+    grep -v -E '^(\+ |--$)' | head -n "$n" || true
+done

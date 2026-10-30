@@ -28,6 +28,10 @@ stacked on an unmerged branch, not the default branch.
   (branches, head, reviewers with approval/state) and its open threads (path, line, author, body) in
   one small JSON. Use it instead of the MCP's get pull request / list comments, which return 20–30k
   characters per call. `--all` adds resolved threads.
+- Failed checks: `<plugin root>/shared/bin/bb-ci <workspace/repo> <build number>` (or `--branch <branch>` for its
+  latest pipeline) lists every failed step with the failing specs, errors and diffs from its log. Don't read
+  logs through the MCP: its step list stops at 10 steps and its step log returns 404 unless the step uuid keeps
+  its braces (`{…}`). A log you still can't read is a blocker to report, never a reason to stop silently.
 - Other actions: Bitbucket MCP (diff, create PR, create/reply comment), found via ToolSearch
   "bitbucket pull request". List responses can be large and spill to a file: parse with `jq`.
 - Waiting on my review: open PRs where I'm in `reviewers` and haven't approved (`participants[].approved`).
